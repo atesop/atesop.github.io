@@ -1,0 +1,729 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Tesop, tech blog" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Java 安装 安装路径:  解压压缩文件到 `~/workspace/` 下 修改环境变量:1234$ vim ~/.bashrc    export JAVA_HOME=$HOME/workspace/jdk1.7.0_75    export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH    export CLASSPATH=.:$JAVA_HO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据平台安装配置-Hadoop on Yarn">
+<meta property="og:url" content="http://blog.tesop.cn/2016/08/04/数据平台安装配置-Hadoop-on-Yarn/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="Java 安装 安装路径:  解压压缩文件到 `~/workspace/` 下 修改环境变量:1234$ vim ~/.bashrc    export JAVA_HOME=$HOME/workspace/jdk1.7.0_75    export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH    export CLASSPATH=.:$JAVA_HO">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.076Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据平台安装配置-Hadoop on Yarn">
+<meta name="twitter:description" content="Java 安装 安装路径:  解压压缩文件到 `~/workspace/` 下 修改环境变量:1234$ vim ~/.bashrc    export JAVA_HOME=$HOME/workspace/jdk1.7.0_75    export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH    export CLASSPATH=.:$JAVA_HO">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2016/08/04/数据平台安装配置-Hadoop-on-Yarn/"/>
+
+  <title> 数据平台安装配置-Hadoop on Yarn | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数据平台安装配置-Hadoop on Yarn
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-08-04T10:34:57+08:00" content="2016-08-04">
+              2016-08-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据平台安装配置/" itemprop="url" rel="index">
+                    <span itemprop="name">数据平台安装配置</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/04/数据平台安装配置-Hadoop-on-Yarn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/04/数据平台安装配置-Hadoop-on-Yarn/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Java-安装"><a href="#Java-安装" class="headerlink" title="Java 安装"></a>Java 安装</h2><hr>
+<p>安装路径: </p>
+<pre><code>解压压缩文件到 `~/workspace/` 下
+</code></pre><p>修改环境变量:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ vim ~/.bashrc</div><div class="line">    export JAVA_HOME=$HOME/workspace/jdk1.7.0_75</div><div class="line">    export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">    export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$CLASSPATH</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>配置生效:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.bashrc</div></pre></td></tr></table></figure></p>
+<p>验证安装:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -version</div></pre></td></tr></table></figure></p>
+<h2 id="Hadoop-安装"><a href="#Hadoop-安装" class="headerlink" title="Hadoop 安装"></a>Hadoop 安装</h2><hr>
+<p>解压压缩文件到 <code>~</code> 下</p>
+<h3 id="修改环境变量"><a href="#修改环境变量" class="headerlink" title="修改环境变量"></a>修改环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ vim ~/.bashrc</div><div class="line">    export HADOOP_DEV_HOME=$HOME/hadoop-2.7.1</div><div class="line">    export HADOOP_MAPRED_HOME=$&#123;HADOOP_DEV_HOME&#125;</div><div class="line">    export HADOOP_COMMON_HOME=$&#123;HADOOP_DEV_HOME&#125;</div><div class="line">    export HADOOP_HDFS_HOME=$&#123;HADOOP_DEV_HOME&#125;</div><div class="line">    export YARN_HOME=$&#123;HADOOP_DEV_HOME&#125;</div><div class="line">    export HADOOP_CONF_DIR=$&#123;HADOOP_DEV_HOME&#125;/etc/hadoop</div><div class="line">    export HDFS_CONF_DIR=$&#123;HADOOP_DEV_HOME&#125;/etc/hadoop</div><div class="line">    export YARN_CONF_DIR=$&#123;HADOOP_DEV_HOME&#125;/etc/hadoop</div><div class="line">    export HADOOP_LOG_DIR=$&#123;HADOOP_DEV_HOME&#125;/logs</div><div class="line">    export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_DEV_HOME/lib/native</div><div class="line">    export HADOOP_OPTS=&quot;-Djava.library.path=$HADOOP_COMMON_LIB_NATIVE_DIR&quot;</div><div class="line">    export HADOOP_HOME=$HADOOP_DEV_HOME</div><div class="line">    export HADOOP_ROOT_LOGGER=WARN,console</div><div class="line">    export PATH=$HADOOP_DEV_HOME/bin:$HADOOP_DEV_HOME/jre/bin:$PATH</div></pre></td></tr></table></figure>
+<p>配置生效:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.bashrc</div></pre></td></tr></table></figure></p>
+<h3 id="修改-Hadoop-配置"><a href="#修改-Hadoop-配置" class="headerlink" title="修改 Hadoop 配置"></a>修改 Hadoop 配置</h3><p>配置文件在 <code>~/hadoop-2.7.1/etc/hadoop/</code></p>
+<ol>
+<li><p><code>core-site.xml</code>   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$vim `core-site.xml`   </div><div class="line"></div><div class="line">    &lt;configuration&gt;</div><div class="line">        &lt;property&gt;</div><div class="line">            &lt;name&gt;fs.defaultFS&lt;/name&gt;</div><div class="line">            &lt;value&gt;hdfs://h16:9000/&lt;/value&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property&gt;</div><div class="line">            &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</div><div class="line">            &lt;value&gt;file:/home/hadoop/hadoop-2.7.1/tmp&lt;/value&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">    &lt;/configuration&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>slaves</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ vim slaves</div><div class="line">    h16</div><div class="line">    h17</div><div class="line">    h18</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>hdfs-site.xml</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</div><div class="line">        &lt;value&gt;h16:9001&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</div><div class="line">        &lt;value&gt;file:/home/hadoop/hadoop-2.7.1/dfs/name&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</div><div class="line">        &lt;value&gt;file:/home/hadoop/hadoop-2.7.1/dfs/data&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</div><div class="line">        &lt;value&gt;2&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>mapred-site.xml</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</div><div class="line">        &lt;value&gt;yarn&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>yarn-site.xml</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">&lt;!-- Site specific YARN configuration properties --&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</div><div class="line">        &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</div><div class="line">        &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;h16:8032&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;h16:8030&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;h16:8035&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;h16:8033&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;h16:8088&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>将 .bashrc 和 hadoop-2.7.1 分发到各个 slave 服务器上:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scp ~/.bashrc h17:/home/hadoop</div><div class="line">scp ~/.bashrc h18:/home/hadoop</div><div class="line">scp -r ~/hadoop-2.7.1 h17:/home/hadoop</div><div class="line">scp -r ~/hadoop-2.7.1 h18:/home/hadoop</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p><strong>提示:</strong> replication 是数据副本数量，默认为3, salve少于3台就会报错</p>
+</blockquote>
+<h2 id="Hadoop-启动"><a href="#Hadoop-启动" class="headerlink" title="Hadoop 启动"></a>Hadoop 启动</h2><hr>
+<p>在 <em>master(h16)</em> 上启动 hadoop</p>
+<ul>
+<li><p>格式化 <em>namenode</em>:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bin/hadoop namenode -format</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动 <em>dfs</em>:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sbin/start-dfs.sh</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动 <em>yarn</em>:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sbin/start-yarn.sh</div></pre></td></tr></table></figure>
+</li>
+<li><p>验证启动情况:<br>  在 <strong>namenode 服务器</strong>上查看</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">jps  # h16</div><div class="line">13971 NameNode</div><div class="line">14326 SecondaryNameNode</div><div class="line">31036 Jps</div><div class="line">14519 ResourceManager</div></pre></td></tr></table></figure>
+<p>  在 <strong>datanode 服务器</strong>上查看</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">jps  # h16</div><div class="line">14642 NodeManager</div><div class="line">14123 DataNode</div><div class="line">31036 Jps</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在 浏览器上打开 <em>h16:8088</em>, 可以查看 <em>hadoop on yarn</em> 的管理状态.</p>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="jps-查看进程都存在-但是在-hadoop-管理界面看不到-datanode-节点-但是-在-datanode-服务器下-data-目录-current-为空-没有-VERSION"><a href="#jps-查看进程都存在-但是在-hadoop-管理界面看不到-datanode-节点-但是-在-datanode-服务器下-data-目录-current-为空-没有-VERSION" class="headerlink" title="jps 查看进程都存在, 但是在 hadoop 管理界面看不到 datanode 节点, 但是, 在 datanode 服务器下, data 目录 current 为空, 没有 VERSION"></a><code>jps</code> 查看进程都存在, 但是在 hadoop 管理界面看不到 <em>datanode</em> 节点, 但是, 在 datanode 服务器下, data 目录 current 为空, 没有 VERSION</h3><ul>
+<li><p><strong>原因</strong>: 防火墙没有关闭, 导致 datanode 启动后, 会自动关闭.</p>
+</li>
+<li><p><strong>解决方法</strong>: 关闭 iptables:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service iptables stop</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="datanode-不能启动-datanode-服务器-中的-data-目录下-current-不为空-有-VERSION"><a href="#datanode-不能启动-datanode-服务器-中的-data-目录下-current-不为空-有-VERSION" class="headerlink" title="datanode 不能启动, datanode 服务器 中的 data 目录下 current 不为空, 有 VERSION"></a><em>datanode</em> 不能启动, <strong>datanode 服务器</strong> 中的 data 目录下 current 不为空, 有 VERSION</h3><ul>
+<li><p><strong>原因</strong>: 在 <strong>namenode</strong> 多次运行 <code>bin/hadoop namenode -format</code>, 导致 <code>namenode</code> 的版本与 <code>datanode</code></p>
+<pre><code>的记录版本不一致. 每次 `namenode format` 时, 会重新创建namenodeId, /dfs/data 中包含上次 format 下的id, 
+namenode format清空了namenode下的数据, 但是没有清空 datanode 下的数据,导致启动时失败
+</code></pre></li>
+<li><p><strong>解决方法</strong>: </p>
+<ol>
+<li>删除相关文件夹后, 重新启动, 不推荐.</li>
+<li>修改每个 Slave 的 namespaceID 使其与 Master 的 namespaceID 一致, 或 Master 的 namespaceID 使其与 Slave 的 namespaceID 一致</li>
+</ol>
+</li>
+</ul>
+<h3 id="操作集群时-出现-WARN-util-NativeCodeLoader"><a href="#操作集群时-出现-WARN-util-NativeCodeLoader" class="headerlink" title="操作集群时, 出现 WARN util.NativeCodeLoader:"></a>操作集群时, 出现 <code>WARN util.NativeCodeLoader:</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">**WARN util.NativeCodeLoader: </div><div class="line">        Unable to load native-hadoop library for your platform...</div><div class="line">        using builtin-java classes where applicable**</div></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>原因</strong>: 将 环境变量中的 <code>HADOOP_ROOT_LOGGER=WARN,console</code>, 修改为 <code>HADOOP_ROOT_LOGGER=DEBUG,console</code>,<br>重新执行 hadoop 命令, 查看 log 发现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">DEBUG util.NativeCodeLoader: Trying to load the custom-built native-hadoop library...</div><div class="line">DEBUG util.NativeCodeLoader: Failed to load native-hadoop with error: java.lang.</div><div class="line">    UnsatisfiedLinkError: /home/hadoop/hadoop-2.7.1/lib/native/libhadoop.so.1.0.0:</div><div class="line">    /lib64/libc.so.6:     </div><div class="line">    version `GLIBC_2.14&apos; not found     </div><div class="line">    (required by /home/hadoop/hadoop-2.7.1/lib/native/libhadoop.so.1.0.0)    </div><div class="line">DEBUG util.NativeCodeLoader: java.library.path=/home/hadoop//hadoop-2.7.1/lib/native</div><div class="line">WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... </div><div class="line">using builtin-java classes where applicable</div></pre></td></tr></table></figure>
+<p> 即 GLIBC_2.14 不存在, root 用户下 执行:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">strings /lib64/libc.so.6|grep GLIBC    </div><div class="line">    GLIBC_2.2.5    </div><div class="line">    GLIBC_2.2.6    </div><div class="line">    GLIBC_2.3    </div><div class="line">    GLIBC_2.3.2    </div><div class="line">    GLIBC_2.3.3    </div><div class="line">    GLIBC_2.3.4    </div><div class="line">    GLIBC_2.4    </div><div class="line">    GLIBC_2.5    </div><div class="line">    GLIBC_2.6    </div><div class="line">    GLIBC_2.7    </div><div class="line">    GLIBC_2.8    </div><div class="line">    GLIBC_2.9    </div><div class="line">    GLIBC_2.10    </div><div class="line">    GLIBC_2.11    </div><div class="line">    GLIBC_2.12    </div><div class="line">    GLIBC_PRIVATE</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解决方案</strong>: 需要重新编译安装 GLIBC_2.14, 参考 [/lib64/libc.so.6: version `GLIBC_2.14’ not found问题]</p>
+</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><hr>
+<p> <a href="http://wuchong.me/blog/2015/04/04/spark-on-yarn-cluster-deploy/" target="_blank" rel="external">Spark On YARN 集群安装部署</a></p>
+<p> <a href="http://www.cnblogs.com/xia520pi/archive/2012/05/16/2503949.html#!comments" target="_blank" rel="external">Hadoop集群（第5期）_Hadoop安装配置</a></p>
+<p> [/lib64/libc.so.6: version `GLIBC_2.14’ not found问题] (<a href="http://my.oschina.net/zhangxu0512/blog/262275" target="_blank" rel="external">http://my.oschina.net/zhangxu0512/blog/262275</a>)</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/04/数据平台安装配置/" rel="next" title="数据平台安装配置">
+                <i class="fa fa-chevron-left"></i> 数据平台安装配置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/04/数据平台安装配置-Spark-on-Yarn/" rel="prev" title="数据平台安装配置-Spark on Yarn">
+                数据平台安装配置-Spark on Yarn <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/04/数据平台安装配置-Hadoop-on-Yarn/"
+           data-title="数据平台安装配置-Hadoop on Yarn" data-url="http://blog.tesop.cn/2016/08/04/数据平台安装配置-Hadoop-on-Yarn/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-安装"><span class="nav-number">1.</span> <span class="nav-text">Java 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop-安装"><span class="nav-number">2.</span> <span class="nav-text">Hadoop 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改环境变量"><span class="nav-number">2.1.</span> <span class="nav-text">修改环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-Hadoop-配置"><span class="nav-number">2.2.</span> <span class="nav-text">修改 Hadoop 配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop-启动"><span class="nav-number">3.</span> <span class="nav-text">Hadoop 启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到问题"><span class="nav-number">4.</span> <span class="nav-text">遇到问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jps-查看进程都存在-但是在-hadoop-管理界面看不到-datanode-节点-但是-在-datanode-服务器下-data-目录-current-为空-没有-VERSION"><span class="nav-number">4.1.</span> <span class="nav-text">jps 查看进程都存在, 但是在 hadoop 管理界面看不到 datanode 节点, 但是, 在 datanode 服务器下, data 目录 current 为空, 没有 VERSION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#datanode-不能启动-datanode-服务器-中的-data-目录下-current-不为空-有-VERSION"><span class="nav-number">4.2.</span> <span class="nav-text">datanode 不能启动, datanode 服务器 中的 data 目录下 current 不为空, 有 VERSION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作集群时-出现-WARN-util-NativeCodeLoader"><span class="nav-number">4.3.</span> <span class="nav-text">操作集群时, 出现 WARN util.NativeCodeLoader:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

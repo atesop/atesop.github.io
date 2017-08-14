@@ -1,0 +1,743 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux,Bash," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文总结作者在 Linux 下日常操作命令及实用方法。 统计目录(或文件)所占磁盘空间的大小 — du1du -sh $path 硬盘检测 — omreport12omreport storage pdisk controller=0 |grep ^Statusomreport storage vdisk controller=0">
+<meta name="keywords" content="Linux,Bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux Bash 实用方法">
+<meta property="og:url" content="http://blog.tesop.cn/2016/08/28/Linux-Bash-实用方法/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="本文总结作者在 Linux 下日常操作命令及实用方法。 统计目录(或文件)所占磁盘空间的大小 — du1du -sh $path 硬盘检测 — omreport12omreport storage pdisk controller=0 |grep ^Statusomreport storage vdisk controller=0">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.063Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux Bash 实用方法">
+<meta name="twitter:description" content="本文总结作者在 Linux 下日常操作命令及实用方法。 统计目录(或文件)所占磁盘空间的大小 — du1du -sh $path 硬盘检测 — omreport12omreport storage pdisk controller=0 |grep ^Statusomreport storage vdisk controller=0">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2016/08/28/Linux-Bash-实用方法/"/>
+
+  <title> Linux Bash 实用方法 | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux Bash 实用方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-08-28T16:37:18+08:00" content="2016-08-28">
+              2016-08-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/28/Linux-Bash-实用方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/28/Linux-Bash-实用方法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文总结作者在 Linux 下日常操作命令及实用方法。</p>
+<h2 id="统计目录-或文件-所占磁盘空间的大小-—-du"><a href="#统计目录-或文件-所占磁盘空间的大小-—-du" class="headerlink" title="统计目录(或文件)所占磁盘空间的大小 — du"></a>统计目录(或文件)所占磁盘空间的大小 — du</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">du -sh $path</div></pre></td></tr></table></figure>
+<h2 id="硬盘检测-—-omreport"><a href="#硬盘检测-—-omreport" class="headerlink" title="硬盘检测 — omreport"></a>硬盘检测 — omreport</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">omreport storage pdisk controller=0 |grep ^Status</div><div class="line">omreport storage vdisk controller=0</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="查看内核信息"><a href="#查看内核信息" class="headerlink" title="查看内核信息"></a>查看内核信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ uname -a</div><div class="line">$ cat /proc/version</div></pre></td></tr></table></figure>
+<h2 id="虚拟内核-—-proc"><a href="#虚拟内核-—-proc" class="headerlink" title="虚拟内核 — /proc"></a>虚拟内核 — /proc</h2><p>/proc 完全是内核虚拟的。内核将一些系统信息都放在/proc目录下一文件和文本的方式显示出来，如：/proc/cpuinfo、/proc/meminfo。</p>
+<h2 id="查看操作系统版本号"><a href="#查看操作系统版本号" class="headerlink" title="查看操作系统版本号"></a>查看操作系统版本号</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lsb_release -c</div></pre></td></tr></table></figure>
+<h2 id="判断当前系统的PATH中是否有该命令的目录-—-pathmunge"><a href="#判断当前系统的PATH中是否有该命令的目录-—-pathmunge" class="headerlink" title="判断当前系统的PATH中是否有该命令的目录 — pathmunge"></a>判断当前系统的PATH中是否有该命令的目录 — pathmunge</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">pathmunge&#123;</div><div class="line"><span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="variable">$PATH</span> | /bin/egrep -q <span class="string">"(^|:)<span class="variable">$1</span>($|:)"</span>;<span class="keyword">then</span></div><div class="line"><span class="keyword">if</span>[<span class="string">"<span class="variable">$2</span>"</span>=<span class="string">"after"</span>];<span class="keyword">then</span></div><div class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$1</span></div><div class="line"><span class="keyword">else</span></div><div class="line">PATH=<span class="variable">$1</span>:<span class="variable">$PATH</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="built_in">export</span> PATH</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>判断当前系统的PATH中是否有该命令的目录，如果没有，则判断是要将该目录放于PATH之前还是之后。</p>
+<h2 id="定时任务-—-crontab"><a href="#定时任务-—-crontab" class="headerlink" title="定时任务 — crontab"></a>定时任务 — crontab</h2><pre><code>crontab -l 查看定时任务
+crontab -e 编辑定时任务
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*/5 * * * * . /etc/profile;/bin/sh 可执行任务 &gt;&gt; 日志文件 2&gt;&amp;1</div></pre></td></tr></table></figure>
+<p>指定运行环境变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">* * * * * . /etc/profile; /bin/bash scripts.sh</div><div class="line">0 5 * * * . $HOME/.profile; /path/to/command/to/run</div></pre></td></tr></table></figure></p>
+<p>使用 date 时，需要转义:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/bin/<span class="built_in">echo</span> $(/bin/date +<span class="string">'\%Y\%m\%d\%H\%M\%S'</span>)</div><div class="line"></div><div class="line">DATEVAR=date +20%y%m%d_%H%M%S</div><div class="line">* * * * * /bin/<span class="built_in">echo</span> $(<span class="variable">$DATEVAR</span>) &gt;&gt; /tmp/crontab.log</div></pre></td></tr></table></figure>
+<p>run-parts 来指定目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">01 * * * * root run-parts /etc/cron.hourly</div></pre></td></tr></table></figure></p>
+<p><em>注</em>： 修改完 crontab 文件后，不会立即执行，需要大约2-3 分钟后执行。 </p>
+<h2 id="单词统计-—-wc"><a href="#单词统计-—-wc" class="headerlink" title="单词统计 — wc"></a>单词统计 — wc</h2><p>常用参数：</p>
+<pre><code>-c或--bytes或--chars 只显示Bytes数
+-l或--lines 只显示列数
+-w或--words 只显示字数
+</code></pre><h2 id="文件分割-—-split"><a href="#文件分割-—-split" class="headerlink" title="文件分割 — split"></a>文件分割 — split</h2><p>用法：split [–help][–version][-&lt;行数&gt;][-b &lt;字节&gt;][-C &lt;字节&gt;][-l &lt;行数&gt;][要切割的文件][输出文件名]</p>
+<pre><code>-a, --suffix-length=N 指定输出文件名的后缀，默认为2个
+
+-b, --bytes=SIZE 指定输出文件的字节数
+
+-C, --line-bytes=SIZE 每一输出档中，单行的最大 byte 数
+
+-d, --numeric-suffixes 使用数字代替字母做后缀
+
+-l, --lines=NUMBER NUMBER 值为每一输出档的列数大小
+</code></pre><h2 id="zip-密码保护"><a href="#zip-密码保护" class="headerlink" title="zip 密码保护"></a>zip 密码保护</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$zip</span> -P password var-log-protected.zip /var/<span class="built_in">log</span>/*</div><div class="line"></div><div class="line">$ zip -e var-log-protected.zip /var/<span class="built_in">log</span>/*</div><div class="line">Enter password:</div><div class="line">Verify password:</div><div class="line"></div><div class="line">$ unzip var-log-protected.zip</div><div class="line">Archive: var-log-protected.zip</div><div class="line"> password:</div></pre></td></tr></table></figure>
+<h2 id="文件和目录的复制-scp"><a href="#文件和目录的复制-scp" class="headerlink" title="文件和目录的复制-scp"></a>文件和目录的复制-scp</h2><p>scp 参数</p>
+<pre><code>-r 递归遍历文件夹
+-l 限速
+-v 和大多数 linux 命令中的 -v 意思一样 , 用来显示进度 . 可以用来查看连接 , 认证 , 或是配置错误 .
+-C 使能压缩选项 .
+-P 选择端口 . 注意 -p 已经被 rcp 使用 .
+-4 强行使用 IPV4 地址 .
+-6 强行使用 IPV6 地址 .
+</code></pre><h2 id="不同系统文件格式转化"><a href="#不同系统文件格式转化" class="headerlink" title="不同系统文件格式转化"></a>不同系统文件格式转化</h2><pre><code>dos2unix
+unix2dos
+unix2mac
+mac2unix
+</code></pre><h2 id="文本查找-—-grep"><a href="#文本查找-—-grep" class="headerlink" title="文本查找 — grep"></a>文本查找 — grep</h2><pre><code>-n 显示行号
+-V 反向展示
+-A 1 前面一行
+-B 1 前后各一行
+-C 1 后面一行
+</code></pre><h2 id="去除linux文本中的-M"><a href="#去除linux文本中的-M" class="headerlink" title="去除linux文本中的^M"></a>去除linux文本中的^M</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tr -d <span class="string">'\r'</span>&lt;source.txt &gt;newfile.txt</div></pre></td></tr></table></figure>
+<h2 id="文本转码"><a href="#文本转码" class="headerlink" title="文本转码"></a>文本转码</h2><ul>
+<li>vim直接转换，如: <code>:set filecoding=utf-8</code></li>
+<li>enconv: 如：<code>enconv -L zh_CN -x UTF-8 filename</code></li>
+<li>iconv: 如：<code>iconv -f GBK -t UTF-8 file1 -o file2</code></li>
+</ul>
+<h2 id="算术表达式"><a href="#算术表达式" class="headerlink" title="算术表达式"></a>算术表达式</h2><ul>
+<li>$((3+2))</li>
+<li>$[3+2]</li>
+<li>echo <code>echo 2+3</code>|bcg</li>
+</ul>
+<h2 id="dev-random-dev-urandom"><a href="#dev-random-dev-urandom" class="headerlink" title="/dev/random, /dev/urandom"></a>/dev/random, /dev/urandom</h2><p>真随机数，伪随机数</p>
+<h2 id="dev-tcp-amp-dev-udp"><a href="#dev-tcp-amp-dev-udp" class="headerlink" title="/dev/tcp &amp; /dev/udp"></a>/dev/tcp &amp; /dev/udp</h2><p>bash程序中使用/dev/tcp/ip/port的方式就可以创建一个scoket作为客户端去连接服务端的ip:port</p>
+<h2 id="用零去填充一个指定大小的文件-—-dev-zero"><a href="#用零去填充一个指定大小的文件-—-dev-zero" class="headerlink" title="用零去填充一个指定大小的文件 — /dev/zero"></a>用零去填充一个指定大小的文件 — /dev/zero</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ dd if=/dev/zero of=./bigfile bs=1M count=1024</div><div class="line">1024+0 records in</div><div class="line">1024+0 records out</div><div class="line">1073741824 bytes (1.1 GB, 1.0 GiB) copied, 0.3501 s, 3.1 GB/s</div></pre></td></tr></table></figure>
+<h2 id="打开一个subshell执行命令"><a href="#打开一个subshell执行命令" class="headerlink" title="打开一个subshell执行命令"></a>打开一个subshell执行命令</h2><pre><code>1. 使用&amp;作为命令结束提交了作业控制任务时。
+
+2. 使用|连接的命令会在subshell中打开。
+
+3. 使用()封装的命令。
+
+4. 使用coproc（bash 4.0版本之后支持）作为前缀执行的命令。
+
+5. 要执行的文件不存在或者文件存在但不具备可执行权限的时候，这个执行过程会打开一个subshell执行。
+</code></pre><h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">find . -type d -name &quot;*log*&quot; | xargs -I &#123;&#125; sh -c &quot;echo &#123;&#125;;ls -la &#123;&#125; | tail -2</div><div class="line"></div><div class="line">cat file | xargs -I % curl http://example.com/persons/%.tar</div></pre></td></tr></table></figure>
+<h2 id="脚本调试"><a href="#脚本调试" class="headerlink" title="脚本调试"></a>脚本调试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash -v</div><div class="line">-v     可视模式</div><div class="line">-x     跟踪模式(xtrace)</div><div class="line">-n     检查bash的语法错误</div><div class="line">-e     bash脚本命令执行错误的时候直接退出</div></pre></td></tr></table></figure>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><pre><code>find /etc -name passwd &gt; /dev/null # 只输出错误信息到屏幕
+find /etc -name passwd 2&gt; /dev/null # 只输出正确信息到屏幕
+find /etc -name passwd &amp;&gt; /dev/null # 所有信息都不输出到屏幕
+find /etc -name passwd 2&gt;&amp;1 # 将标准错误输出的，重定向到标准输出再输出到屏幕
+&amp;&gt;&gt;、1&gt;&amp;2、？2&gt;&amp;3、6&gt;&amp;8、&gt;&gt;file 2&gt;&amp;1
+</code></pre><h2 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ pipe=&quot;|&quot;</div><div class="line"></div><div class="line">$ cat /etc/passwd $pipe wc -l</div><div class="line">cat: invalid option -- &apos;l&apos;</div><div class="line">Try &apos;cat --help&apos; for more information.</div><div class="line">$ eval cat /etc/passwd $pipe wc -l</div></pre></td></tr></table></figure>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><pre><code>env     查看当前bash已经定义的环境变量
+set     不加任何参数可以查看当前bash环境中的所有变量，包括环境变量和私有的一般变量
+export     将一个一般变量编程环境变量
+</code></pre><h2 id="启动多线程"><a href="#启动多线程" class="headerlink" title="启动多线程"></a>启动多线程</h2><p>wait 是等待前面的后台进程都结束才运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ cat test.sh</div><div class="line"><span class="comment">#！/bin/bash</span></div><div class="line"><span class="keyword">for</span>  i <span class="keyword">in</span> $(seq 1000)</div><div class="line"><span class="keyword">do</span></div><div class="line">&#123;</div><div class="line"><span class="keyword">for</span> j <span class="keyword">in</span> 1 2 3</div><div class="line"><span class="keyword">do</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$j</span></div><div class="line">sleep 1m</div><div class="line"><span class="keyword">done</span></div><div class="line">&#125;&amp;</div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">wait</span></div></pre></td></tr></table></figure></p>
+<h2 id="子进程崩溃程序"><a href="#子进程崩溃程序" class="headerlink" title="子进程崩溃程序"></a>子进程崩溃程序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.()&#123; .|.&amp; &#125;;.</div></pre></td></tr></table></figure>
+<h2 id="移动除了个别文件外的文件到其他目录"><a href="#移动除了个别文件外的文件到其他目录" class="headerlink" title="移动除了个别文件外的文件到其他目录"></a>移动除了个别文件外的文件到其他目录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv ~/Linux/Old/!(Tux.png|Tux1.png|Tux2.png) ~/Linux/New/</div></pre></td></tr></table></figure>
+<h2 id="sort-排序"><a href="#sort-排序" class="headerlink" title="sort 排序"></a>sort 排序</h2><p>sort的文件很大，需要指定一个临时文件来存储中间结果，sort -T tmpfile</p>
+<h2 id="程序前后台切换"><a href="#程序前后台切换" class="headerlink" title="程序前后台切换"></a>程序前后台切换</h2><pre><code>&amp; 最经常被用在一个命令的最后，可以把这个命令放到后台执行。
+ctrl + z 可以将一个正在前台执行的命令放到后台，并且暂停
+jobs 查看当前有多少在后台运行的命令
+fg 将后台中的命令调至前台继续运行 如果后台中有多个命令，可以用 fg %jobnumber将选中的命令调出，%jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)
+bg 将一个在后台暂停的命令，变成继续执行 如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出，%jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)
+</code></pre><h2 id="linux-防火墙-允许特定-IP-与当前机器的所有通信"><a href="#linux-防火墙-允许特定-IP-与当前机器的所有通信" class="headerlink" title="linux 防火墙 允许特定 IP 与当前机器的所有通信"></a>linux 防火墙 允许特定 IP 与当前机器的所有通信</h2><p>root 权限下,<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/iptables</div></pre></td></tr></table></figure></p>
+<p>增加 以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-A INPUT -s 1.1.1.1 -j ACCEPT</div></pre></td></tr></table></figure></p>
+<p>重启防火墙:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service iptables restart</div></pre></td></tr></table></figure></p>
+<p>扩展：<br>只允许外网的 特定 ip (ip1,ip2) 访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">iptables -I INPUT -i lo -j ACCEPT</div><div class="line">-A INPUT -s ip1 -j ACCEPT</div><div class="line">-A INPUT -s ip2 -j ACCEPT</div><div class="line">iptables -P INPUT DROP</div></pre></td></tr></table></figure></p>
+<h2 id="update-alternatives"><a href="#update-alternatives" class="headerlink" title="update-alternatives"></a>update-alternatives</h2><p>查看 java 链接可用的软件:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">update-alternatives --display java</div></pre></td></tr></table></figure></p>
+<p>选择需要的软件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">update-alternatives --config java</div></pre></td></tr></table></figure></p>
+<p>update-alternatives 在一般情况下是由postinst 和 prerm 这样的安装脚本自动调用的，所以一个 alternative 的状态有两种：自动和手动。每个 alternative 的初始状态都是自动。如果系统发现管理员手动修改了一个 alternative，它的状态就从自动变成了手动，这样安装脚本就不会更新它了。如果你希望将一个 alternative 变回自动，只要执行代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">update-alternatives --auto</div><div class="line">update-alternatives --install gen link alt pri [--slave sgen slink salt] ...</div><div class="line">update-alternatives --remove name path</div></pre></td></tr></table></figure></p>
+<h2 id="date"><a href="#date" class="headerlink" title="date"></a>date</h2><pre><code>当前时间: date +&apos;%Y%m%d%H%M%S&apos;
+前一小时: date -d &quot;-1 hour&quot; +%Y%m%d%H
+前一天: date -d &quot;-24 hour&quot; +%Y%m%d
+时间格式转化: date -d&apos;20160820&apos; +%Y-%m-%d
+指定输入格式转化: date -j -f &quot;%d %b %Y&quot; &quot;27 JUN 2011&quot; +%Y%m%d
+时间戳转date: date -d &apos;@1467338291&apos; +%Y%m%d 
+时区: -u, --utc, --universal  date --date=&apos;TZ=&quot;America/Los_Angeles&quot; 09:00 next Fri&apos;
+</code></pre><h2 id="Kill-pid"><a href="#Kill-pid" class="headerlink" title="Kill pid"></a>Kill pid</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux|grep somename |grep -v grep |awk <span class="string">'&#123;print $2&#125;'</span>|xargs <span class="built_in">kill</span> -9</div></pre></td></tr></table></figure>
+<p>如果是脚本中，需要注意 $ 转义:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux|grep somename |grep -v grep |awk &apos;&#123;print \$2&#125;&apos;|xargs kill -9</div></pre></td></tr></table></figure></p>
+<p>可以使用 pkill:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pkill -f &quot;Process name&quot;</div></pre></td></tr></table></figure></p>
+<p>killall:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">killall -9 &lt;processname&gt;</div></pre></td></tr></table></figure></p>
+<p>前段时间看到一系列 SHELL 讲解，需要更深了解的可以移步，<a href="http://mp.weixin.qq.com/s?__biz=MzIxNDMyODgyMA==&amp;mid=2247483669&amp;idx=1&amp;sn=c29eb916825afa013e50b3cab5da7c87&amp;scene=0#wechat_redirect" target="_blank" rel="external">SHELL编程之执行环境</a>,<a href="http://mp.weixin.qq.com/s?__biz=MzIxNDMyODgyMA==&amp;mid=2247483666&amp;idx=1&amp;sn=b3df5f3f8d8803fb88719463388db4ed&amp;scene=0#wechat_redirect" target="_blank" rel="external">SHELL编程之执行过程</a>,<a href="http://mp.weixin.qq.com/s?__biz=MzIxNDMyODgyMA==&amp;mid=2247483679&amp;idx=1&amp;sn=f98b8ef107264b9258f8ab76986b8f57&amp;scene=0#wechat_redirect" target="_blank" rel="external">SHELL编程之特殊符号</a>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/Bash/" rel="tag">#Bash</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/28/AWK-实用方法/" rel="next" title="AWK 实用方法">
+                <i class="fa fa-chevron-left"></i> AWK 实用方法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/03/MySQL-主从一致介绍/" rel="prev" title="MySQL 主从一致介绍">
+                MySQL 主从一致介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/28/Linux-Bash-实用方法/"
+           data-title="Linux Bash 实用方法" data-url="http://blog.tesop.cn/2016/08/28/Linux-Bash-实用方法/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#统计目录-或文件-所占磁盘空间的大小-—-du"><span class="nav-number">1.</span> <span class="nav-text">统计目录(或文件)所占磁盘空间的大小 — du</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬盘检测-—-omreport"><span class="nav-number">2.</span> <span class="nav-text">硬盘检测 — omreport</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看内核信息"><span class="nav-number">3.</span> <span class="nav-text">查看内核信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟内核-—-proc"><span class="nav-number">4.</span> <span class="nav-text">虚拟内核 — /proc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看操作系统版本号"><span class="nav-number">5.</span> <span class="nav-text">查看操作系统版本号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判断当前系统的PATH中是否有该命令的目录-—-pathmunge"><span class="nav-number">6.</span> <span class="nav-text">判断当前系统的PATH中是否有该命令的目录 — pathmunge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定时任务-—-crontab"><span class="nav-number">7.</span> <span class="nav-text">定时任务 — crontab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单词统计-—-wc"><span class="nav-number">8.</span> <span class="nav-text">单词统计 — wc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件分割-—-split"><span class="nav-number">9.</span> <span class="nav-text">文件分割 — split</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zip-密码保护"><span class="nav-number">10.</span> <span class="nav-text">zip 密码保护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件和目录的复制-scp"><span class="nav-number">11.</span> <span class="nav-text">文件和目录的复制-scp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同系统文件格式转化"><span class="nav-number">12.</span> <span class="nav-text">不同系统文件格式转化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本查找-—-grep"><span class="nav-number">13.</span> <span class="nav-text">文本查找 — grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除linux文本中的-M"><span class="nav-number">14.</span> <span class="nav-text">去除linux文本中的^M</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本转码"><span class="nav-number">15.</span> <span class="nav-text">文本转码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算术表达式"><span class="nav-number">16.</span> <span class="nav-text">算术表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dev-random-dev-urandom"><span class="nav-number">17.</span> <span class="nav-text">/dev/random, /dev/urandom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dev-tcp-amp-dev-udp"><span class="nav-number">18.</span> <span class="nav-text">/dev/tcp & /dev/udp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用零去填充一个指定大小的文件-—-dev-zero"><span class="nav-number">19.</span> <span class="nav-text">用零去填充一个指定大小的文件 — /dev/zero</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开一个subshell执行命令"><span class="nav-number">20.</span> <span class="nav-text">打开一个subshell执行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-number">21.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本调试"><span class="nav-number">22.</span> <span class="nav-text">脚本调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">23.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eval"><span class="nav-number">24.</span> <span class="nav-text">eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">25.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动多线程"><span class="nav-number">26.</span> <span class="nav-text">启动多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子进程崩溃程序"><span class="nav-number">27.</span> <span class="nav-text">子进程崩溃程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动除了个别文件外的文件到其他目录"><span class="nav-number">28.</span> <span class="nav-text">移动除了个别文件外的文件到其他目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sort-排序"><span class="nav-number">29.</span> <span class="nav-text">sort 排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序前后台切换"><span class="nav-number">30.</span> <span class="nav-text">程序前后台切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-防火墙-允许特定-IP-与当前机器的所有通信"><span class="nav-number">31.</span> <span class="nav-text">linux 防火墙 允许特定 IP 与当前机器的所有通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-alternatives"><span class="nav-number">32.</span> <span class="nav-text">update-alternatives</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#date"><span class="nav-number">33.</span> <span class="nav-text">date</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kill-pid"><span class="nav-number">34.</span> <span class="nav-text">Kill pid</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

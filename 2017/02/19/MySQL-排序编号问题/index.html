@@ -1,0 +1,648 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要是介绍 MySQL 输出结果时的 Record 的序号问题，及排序问题 包括 严格递增， 重复不连续， 重复连续等。">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 编号及排序问题">
+<meta property="og:url" content="http://blog.tesop.cn/2017/02/19/MySQL-排序编号问题/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="本文主要是介绍 MySQL 输出结果时的 Record 的序号问题，及排序问题 包括 严格递增， 重复不连续， 重复连续等。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.066Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 编号及排序问题">
+<meta name="twitter:description" content="本文主要是介绍 MySQL 输出结果时的 Record 的序号问题，及排序问题 包括 严格递增， 重复不连续， 重复连续等。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2017/02/19/MySQL-排序编号问题/"/>
+
+  <title> MySQL 编号及排序问题 | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MySQL 编号及排序问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-02-19T13:10:36+08:00" content="2017-02-19">
+              2017-02-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/19/MySQL-排序编号问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/19/MySQL-排序编号问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要是介绍 MySQL 输出结果时的 Record 的序号问题，及排序问题 包括 严格递增， 重复不连续， 重复连续等。</p>
+<a id="more"></a>
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h2><p>我们先设定一个应用场景, 某贪吃蛇小游戏，每个用户信息包括 id 和昵称, id 唯一。<br>每结束一局，生成一条记录， 包括记录id， 完成时间，用户 id， 得分。</p>
+<p>首先创建用户表 <code>t_user</code>, 并插入测试数据：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_user(</div><div class="line">  <span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment,</div><div class="line">  u_name <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">not</span> <span class="literal">null</span>,</div><div class="line">  primary <span class="keyword">key</span> (<span class="string">`id`</span>)</div><div class="line">);</div><div class="line"></div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t_user(u_name) <span class="keyword">values</span> (<span class="string">"user1"</span>),(<span class="string">"user2"</span>),(<span class="string">"user3"</span>),(<span class="string">"user4"</span>);</div></pre></td></tr></table></figure></p>
+<p> 成绩表 <code>t_snake_score</code>， 并插入测试数据：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_snake_score(</div><div class="line">     <span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment,</div><div class="line">     created_at <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span>,</div><div class="line">     user_id <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span>,</div><div class="line">     score <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span>,</div><div class="line">     primary <span class="keyword">key</span> (<span class="string">`id`</span>),</div><div class="line">     <span class="keyword">key</span> <span class="string">`score_index`</span>(<span class="string">`score`</span>)</div><div class="line">);</div><div class="line"></div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t_snake_score(created_at, user_id, score) <span class="keyword">values</span></div><div class="line">(<span class="number">1484894869</span>, <span class="number">1</span>, <span class="number">80</span>), (<span class="number">1484894870</span>, <span class="number">1</span>, <span class="number">50</span>),(<span class="number">1484894871</span>, <span class="number">1</span>, <span class="number">80</span>),</div><div class="line">(<span class="number">1484894872</span>, <span class="number">2</span>, <span class="number">80</span>),(<span class="number">1484894873</span>, <span class="number">2</span>, <span class="number">80</span>),(<span class="number">1484894874</span>, <span class="number">3</span>, <span class="number">60</span>),</div><div class="line">(<span class="number">1484894880</span>, <span class="number">1</span>, <span class="number">60</span>),(<span class="number">1484894890</span>, <span class="number">3</span>, <span class="number">90</span>),(<span class="number">1484894895</span>, <span class="number">4</span>, <span class="number">95</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="2-正式工作"><a href="#2-正式工作" class="headerlink" title="2. 正式工作"></a>2. 正式工作</h2><h3 id="1-将结果按照-score-从大到小-created-at-从小到大排序-并生成排序"><a href="#1-将结果按照-score-从大到小-created-at-从小到大排序-并生成排序" class="headerlink" title="1. 将结果按照 score 从大到小, created_at 从小到大排序, 并生成排序"></a>1. 将结果按照 score 从大到小, created_at 从小到大排序, 并生成排序</h3><p>以下为 3 种序号方式： </p>
+<pre><code>1. 严格递增: 1,2,3,4,...
+2. 重复不连续: 1,2,2,4,...
+3. 重复连续: 1,2,2,3,...
+</code></pre><p>对应 MySQL 语句<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * </div><div class="line">	<span class="keyword">from</span> (</div><div class="line">	  <span class="keyword">select</span> AA.id, AA.created_at, AA.user_id, AA.score, </div><div class="line">  	    (@rank1:=@rank1+<span class="number">1</span>) rank1,</div><div class="line">	    (@rank2:=<span class="keyword">IF</span>(@curscore=score, @rank2, @rank1)) rank2,	</div><div class="line">        (@rank3:=<span class="keyword">IF</span>(@curscore=score, @rank3, @rank3+<span class="number">1</span>)) rank3,</div><div class="line">        (@curscore:= score) newscore </div><div class="line">    <span class="keyword">from</span> (</div><div class="line">      <span class="keyword">SELECT</span> <span class="keyword">id</span>, created_at, user_id, score </div><div class="line">      <span class="keyword">FROM</span> t_snake_score <span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span>, created_at <span class="keyword">asc</span></div><div class="line">    ) AA </div><div class="line">    <span class="keyword">cross</span> <span class="keyword">join</span> (<span class="keyword">select</span> @rank1:=<span class="number">0</span>, @rank2:=<span class="number">0</span>, @rank3 := <span class="number">0</span>, @curscore:=<span class="number">0</span>) <span class="keyword">as</span> params </div><div class="line">) <span class="keyword">as</span> A;</div></pre></td></tr></table></figure></p>
+<p>查询结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># id, created_at, user_id, score, rank1, rank2, rank3, newscore</div><div class="line">9, 1484894895, 4, 95, 1, 1, 1, 95</div><div class="line">8, 1484894890, 3, 90, 2, 2, 2, 90</div><div class="line">1, 1484894869, 1, 80, 3, 3, 3, 80</div><div class="line">3, 1484894871, 1, 80, 4, 3, 3, 80</div><div class="line">4, 1484894872, 2, 80, 5, 3, 3, 80</div><div class="line">5, 1484894873, 2, 80, 6, 3, 3, 80</div><div class="line">6, 1484894874, 3, 60, 7, 7, 4, 60</div><div class="line">7, 1484894880, 1, 60, 8, 7, 4, 60</div><div class="line">2, 1484894870, 1, 50, 9, 9, 5, 50</div></pre></td></tr></table></figure>
+<h3 id="2-找到每个-user-id-的最佳表现，如果相同，选择最先（created-at）的一个"><a href="#2-找到每个-user-id-的最佳表现，如果相同，选择最先（created-at）的一个" class="headerlink" title="2. 找到每个 user_id 的最佳表现，如果相同，选择最先（created_at）的一个"></a>2. 找到每个 user_id 的最佳表现，如果相同，选择最先（created_at）的一个</h3><p>对应 MySQL 语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> t1.* </div><div class="line"><span class="keyword">from</span> t_snake_score t1 </div><div class="line"><span class="keyword">left</span> <span class="keyword">join</span> t_snake_score t2 </div><div class="line"><span class="keyword">on</span> t1.user_id = t2.user_id <span class="keyword">and</span> </div><div class="line">	(t1.score &lt; t2.score <span class="keyword">or</span> </div><div class="line">		(t1.score = t2.score <span class="keyword">and</span> t1.created_at &gt; t2.created_at)</div><div class="line">	) </div><div class="line"><span class="keyword">where</span> t2.score <span class="keyword">is</span> <span class="literal">null</span>;</div></pre></td></tr></table></figure>
+<p>查询结果如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># id, created_at, user_id, score</div><div class="line">1, 1484894869, 1, 80</div><div class="line">4, 1484894872, 2, 80</div><div class="line">8, 1484894890, 3, 90</div><div class="line">9, 1484894895, 4, 95</div></pre></td></tr></table></figure></p>
+<h3 id="3-找到每个-user-id-的最佳-top-N-表现，如果user-的-第-N-个有相同，选择最先（created-at）的一个"><a href="#3-找到每个-user-id-的最佳-top-N-表现，如果user-的-第-N-个有相同，选择最先（created-at）的一个" class="headerlink" title="3. 找到每个 user_id 的最佳 top N 表现，如果user 的 第 N 个有相同，选择最先（created_at）的一个"></a>3. 找到每个 user_id 的最佳 top N 表现，如果user 的 第 N 个有相同，选择最先（created_at）的一个</h3><p>假设 N = 2, 对应 MySQL 语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> </div><div class="line">	(<span class="keyword">select</span> <span class="keyword">id</span>, created_at, user_id, score,</div><div class="line">		(@rn := <span class="keyword">if</span>(@uid = user_id, @rn + <span class="number">1</span>, <span class="keyword">if</span>(@uid := uid, <span class="number">1</span>, <span class="number">1</span>) )) <span class="keyword">as</span> seqnum</div><div class="line">	<span class="keyword">from</span> t_snake_score </div><div class="line">	<span class="keyword">cross</span> <span class="keyword">join</span> (<span class="keyword">select</span> @rn := <span class="number">0</span>, @uid := <span class="string">""</span>) <span class="keyword">as</span> params </div><div class="line">	<span class="keyword">order</span> <span class="keyword">by</span> user_id <span class="keyword">asc</span>, score <span class="keyword">desc</span>, created_at <span class="keyword">asc</span></div><div class="line">) <span class="keyword">as</span> A <span class="keyword">where</span> seqnum &lt;= <span class="number">2</span>;</div></pre></td></tr></table></figure>
+<p>查询结果如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># id, created_at, user_id, score, seqnum</div><div class="line">1, 1484894869, 1, 80, 1</div><div class="line">3, 1484894871, 1, 80, 2</div><div class="line">4, 1484894872, 2, 80, 1</div><div class="line">5, 1484894873, 2, 80, 2</div><div class="line">8, 1484894890, 3, 90, 1</div><div class="line">6, 1484894874, 3, 60, 2</div><div class="line">9, 1484894895, 4, 95, 1</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag">#MySQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/03/MySQL-主从一致介绍/" rel="next" title="MySQL 主从一致介绍">
+                <i class="fa fa-chevron-left"></i> MySQL 主从一致介绍
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/26/大数据项目架构概述/" rel="prev" title="大数据项目架构概述">
+                大数据项目架构概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/19/MySQL-排序编号问题/"
+           data-title="MySQL 编号及排序问题" data-url="http://blog.tesop.cn/2017/02/19/MySQL-排序编号问题/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-准备工作"><span class="nav-number">1.</span> <span class="nav-text">1. 准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-正式工作"><span class="nav-number">2.</span> <span class="nav-text">2. 正式工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-将结果按照-score-从大到小-created-at-从小到大排序-并生成排序"><span class="nav-number">2.1.</span> <span class="nav-text">1. 将结果按照 score 从大到小, created_at 从小到大排序, 并生成排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-找到每个-user-id-的最佳表现，如果相同，选择最先（created-at）的一个"><span class="nav-number">2.2.</span> <span class="nav-text">2. 找到每个 user_id 的最佳表现，如果相同，选择最先（created_at）的一个</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-找到每个-user-id-的最佳-top-N-表现，如果user-的-第-N-个有相同，选择最先（created-at）的一个"><span class="nav-number">2.3.</span> <span class="nav-text">3. 找到每个 user_id 的最佳 top N 表现，如果user 的 第 N 个有相同，选择最先（created_at）的一个</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

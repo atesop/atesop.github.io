@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2017/08/14/Python%E9%9D%9Eroot%E5%AE%89%E8%A3%85%E5%92%8CPython%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2017-08-14T10:00:04.902Z</lastmod>
+    <data>
+        <display>
+        <title>Python非root安装和Python项目环境配置</title>
+        <pubTime>2017-08-14T12:48:51.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+        <tag>pyenv</tag>
+         
+        <tag>virtualenv</tag>
+         
+        <tag>Anaconda</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/07/30/%E8%AE%B0%E4%B8%80%E6%AC%A1-MySQL-%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4/</loc>
+    <lastmod>2017-07-10T03:18:34.089Z</lastmod>
+    <data>
+        <display>
+        <title>记一次 MySQL 主从数据不一致</title>
+        <pubTime>2016-07-30T08:50:56.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+        <tag>主从</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/01/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4/</loc>
+    <lastmod>2017-07-10T03:18:34.088Z</lastmod>
+    <data>
+        <display>
+        <title>服务器系统时间不一致</title>
+        <pubTime>2016-08-01T14:47:10.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/04/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2017-07-10T03:18:34.086Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置</title>
+        <pubTime>2016-08-04T02:09:59.000Z</pubTime>
+        
+        <tag>Hadoop</tag>
+         
+        <tag>HBase</tag>
+         
+        <tag>大数据</tag>
+         
+        <tag>Storm</tag>
+         
+        <tag>安装</tag>
+         
+        <tag>Spark</tag>
+         
+        <tag>Zookeeper</tag>
+         
+        <tag>Kafka</tag>
+         
+        <tag>Hive</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/05/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-Zookeeper/</loc>
+    <lastmod>2017-07-10T03:18:34.085Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-Zookeeper</title>
+        <pubTime>2016-08-05T02:35:09.000Z</pubTime>
+        
+        <tag>大数据</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/05/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-Storm/</loc>
+    <lastmod>2017-07-10T03:18:34.083Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-Storm</title>
+        <pubTime>2016-08-05T02:37:04.000Z</pubTime>
+        
+        <tag>大数据</tag>
+         
+        <tag>Storm</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/06/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-SparkSQL-with-Hive/</loc>
+    <lastmod>2017-07-10T03:18:34.082Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-SparkSQL with Hive</title>
+        <pubTime>2016-08-06T02:39:08.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/04/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-Spark-on-Yarn/</loc>
+    <lastmod>2017-07-10T03:18:34.080Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-Spark on Yarn</title>
+        <pubTime>2016-08-04T02:35:40.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/04/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-Kafka/</loc>
+    <lastmod>2017-07-10T03:18:34.079Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-Kafka</title>
+        <pubTime>2016-08-04T02:36:31.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/06/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-Hive/</loc>
+    <lastmod>2017-07-10T03:18:34.077Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-Hive</title>
+        <pubTime>2016-08-06T02:37:59.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/04/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-Hadoop-on-Yarn/</loc>
+    <lastmod>2017-07-10T03:18:34.076Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-Hadoop on Yarn</title>
+        <pubTime>2016-08-04T02:34:57.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/06/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-HBase/</loc>
+    <lastmod>2017-07-10T03:18:34.074Z</lastmod>
+    <data>
+        <display>
+        <title>数据平台安装配置-HBase</title>
+        <pubTime>2016-08-06T02:39:44.000Z</pubTime>
+        
+        <tag>Hadoop</tag>
+         
+        <tag>HBase</tag>
+         
+        <tag>大数据</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据平台安装配置" url="http://blog.tesop.cn/categories/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2017/02/26/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</loc>
+    <lastmod>2017-07-10T03:18:34.073Z</lastmod>
+    <data>
+        <display>
+        <title>大数据项目架构概述</title>
+        <pubTime>2017-02-26T01:47:34.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/07/28/flask-nginx-uwsgi/</loc>
+    <lastmod>2017-07-10T03:18:34.071Z</lastmod>
+    <data>
+        <display>
+        <title>Python3+, Flask, Nginx, uWSGI,MySQL 搭建的 Web 应用遇到的问题</title>
+        <pubTime>2016-07-28T14:16:34.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+        <tag>Nginx</tag>
+         
+        <tag>Flask</tag>
+         
+        <tag>uWSGI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/07/04/Videos-of-Math/</loc>
+    <lastmod>2017-07-10T03:18:34.070Z</lastmod>
+    <data>
+        <display>
+        <title>Videos of Math</title>
+        <pubTime>2016-07-04T12:20:37.000Z</pubTime>
+        
+        <tag>数学</tag>
+         
+        <tag>科普</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/07/30/Spring-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2017-07-10T03:18:34.069Z</lastmod>
+    <data>
+        <display>
+        <title>Spring 定时任务总结</title>
+        <pubTime>2016-07-30T09:12:40.000Z</pubTime>
+        
+        <tag>Spring</tag>
+         
+        <tag>Sheduled</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/01/MySQL%E6%95%B0%E6%8D%AE%E9%80%9A%E8%BF%87-mailx-%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E7%9A%84%E4%BB%BB%E5%8A%A1/</loc>
+    <lastmod>2017-07-10T03:18:34.067Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL数据通过 mailx 定时发送的任务</title>
+        <pubTime>2016-07-31T23:02:56.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+        <tag>mail</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2017/02/19/MySQL-%E6%8E%92%E5%BA%8F%E7%BC%96%E5%8F%B7%E9%97%AE%E9%A2%98/</loc>
+    <lastmod>2017-07-10T03:18:34.066Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL 编号及排序问题</title>
+        <pubTime>2017-02-19T05:10:36.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/09/03/MySQL-%E4%B8%BB%E4%BB%8E%E4%B8%80%E8%87%B4%E4%BB%8B%E7%BB%8D/</loc>
+    <lastmod>2017-07-10T03:18:34.064Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL 主从一致介绍</title>
+        <pubTime>2016-09-03T13:27:20.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+        <tag>主从</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/28/Linux-Bash-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2017-07-10T03:18:34.063Z</lastmod>
+    <data>
+        <display>
+        <title>Linux Bash 实用方法</title>
+        <pubTime>2016-08-28T08:37:18.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+        <tag>Bash</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.tesop.cn/2016/08/28/AWK-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2017-07-10T03:18:34.061Z</lastmod>
+    <data>
+        <display>
+        <title>AWK 实用方法</title>
+        <pubTime>2016-08-28T02:40:17.000Z</pubTime>
+        
+        <tag>awk</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+</urlset>

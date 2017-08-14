@@ -1,0 +1,661 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL,mail," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="任务描述每天定时对 Mysql 数据统计，然后将结果(.csv 文件)以附件形式邮件发送给指定人员 基本思路bash 脚本将结果写到制定路径，然后 mail 附件发送，基于 crontab 定时执行">
+<meta name="keywords" content="MySQL,mail">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据通过 mailx 定时发送的任务">
+<meta property="og:url" content="http://blog.tesop.cn/2016/08/01/MySQL数据通过-mailx-定时发送的任务/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="任务描述每天定时对 Mysql 数据统计，然后将结果(.csv 文件)以附件形式邮件发送给指定人员 基本思路bash 脚本将结果写到制定路径，然后 mail 附件发送，基于 crontab 定时执行">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.067Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据通过 mailx 定时发送的任务">
+<meta name="twitter:description" content="任务描述每天定时对 Mysql 数据统计，然后将结果(.csv 文件)以附件形式邮件发送给指定人员 基本思路bash 脚本将结果写到制定路径，然后 mail 附件发送，基于 crontab 定时执行">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2016/08/01/MySQL数据通过-mailx-定时发送的任务/"/>
+
+  <title> MySQL数据通过 mailx 定时发送的任务 | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MySQL数据通过 mailx 定时发送的任务
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-08-01T07:02:56+08:00" content="2016-08-01">
+              2016-08-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/01/MySQL数据通过-mailx-定时发送的任务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/01/MySQL数据通过-mailx-定时发送的任务/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h2><p>每天定时对 Mysql 数据统计，然后将结果(.csv 文件)以附件形式邮件发送给指定人员</p>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>bash 脚本将结果写到制定路径，然后 mail 附件发送，基于 crontab 定时执行</p>
+<a id="more"></a>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h3><h4 id="列数据转为行数据"><a href="#列数据转为行数据" class="headerlink" title="列数据转为行数据"></a>列数据转为行数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select ... case when then .... group by</div></pre></td></tr></table></figure>
+<h4 id="保存为-csv-文件"><a href="#保存为-csv-文件" class="headerlink" title="保存为 csv 文件"></a>保存为 csv 文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select into outfile fields terminated by &apos;,&apos; lines terminated by &apos;\r\n&apos;</div></pre></td></tr></table></figure>
+<p>指定的输出文件路径, 但是报错<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ERROR 1 (HY000) at line 1: Can<span class="string">'t create/write to file '</span>/mypath/outputfile.csv<span class="string">' (Errcode: 2) mv: cannot stat `/mypath/outputfile.csv'</span>: No such file or directory</div></pre></td></tr></table></figure></p>
+<p>查找原因，查看 <a href="http://dev.mysql.com/doc/refman/5.7/en/select-into.html" target="_blank" rel="external">Mysql Doc SELECT Syntax</a>，</p>
+<blockquote>
+<p>The file is created on the server host, so you must have the FILE privilege to use this syntax….If you want to create the resulting file on some other host than the server host, you normally cannot use SELECT … INTO OUTFILE since there is no way to write a path to the file relative to the server host’s file system.</p>
+</blockquote>
+<p>所以，要在 mysql 所在服务器上进行。如果一定要在客户端服务器操作，通常做法是，</p>
+<blockquote>
+<p> However, if the MySQL client software is installed on the remote machine, you can instead use a client command such as mysql -e “SELECT …” &gt; file_name to generate the file on the client host.<br> By default, if you don’t specify absolute path for OUTFILE in select … into OUTFILE “…” It creates the file in “/var/lib/mysql/<database_name>“</database_name></p>
+</blockquote>
+<p>如果不带完整路径，文件将写到数据库默认路径下，如果指定路径，那么需要保证有当前路径的权限，且同名文件不存在。<br>输出文件路径需要 mysql 的写，执行权限，可以将当前用户加到 mysql 组，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">usermod -a -G mysql user</div></pre></td></tr></table></figure></p>
+<h4 id="包含列名"><a href="#包含列名" class="headerlink" title="包含列名"></a>包含列名</h4> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">--column-names</div></pre></td></tr></table></figure>
+<h4 id="完整语句如下"><a href="#完整语句如下" class="headerlink" title="完整语句如下"></a>完整语句如下</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">query_sql=<span class="string">"use db; \</span></div><div class="line"><span class="string">select ref_date,ref_hour, \</span></div><div class="line"><span class="string">sum(case when eid = 1 and ispvtype = 1 then count else 0 end) as 'pv', \</span></div><div class="line"><span class="string">sum(case when eid = 2 and ispvtype = 0 then count else 0 end) as 'uv' \</span></div><div class="line"><span class="string">from t_data \</span></div><div class="line"><span class="string">where utm = 0 and ref_date = \"<span class="variable">$refDate</span>\" group by ref_date, ref_hour  \</span></div><div class="line"><span class="string">into outfile '<span class="variable">$outputfile</span>' fields terminated by ',' lines terminated by '\r\n' \</span></div><div class="line"><span class="string">"</span></div></pre></td></tr></table></figure>
+<h2 id="发邮件"><a href="#发邮件" class="headerlink" title="发邮件"></a>发邮件</h2><h3 id="uuencode"><a href="#uuencode" class="headerlink" title="uuencode"></a>uuencode</h3><p>因为要添加附件，选择 <code>uuencode + mail</code> 的方式，机器上没有 <code>uuencode</code>，安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$yum install sharutils</div></pre></td></tr></table></figure></p>
+<p>安装后，测试发送附件，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ( cat mailbody.txt; uuencode <span class="variable">$filename</span> <span class="variable">$reportname</span> ) | mail -s <span class="string">"mail subject"</span> sendto@xxx.xxx</div></pre></td></tr></table></figure></p>
+<p>但接收到的为乱码。可能的原因是邮件提供商不支持。</p>
+<h4 id="乱码详细原因"><a href="#乱码详细原因" class="headerlink" title="乱码详细原因"></a>乱码详细原因</h4><blockquote>
+<p>出现此现象是因为 uuencode 邮件误标记 MIME 版本 1.0 标头。因此，该消息的格式不正确。</p>
+<p>Exchange Server uuencode 邮件误标记 MIME 版本 1.0 标头，该邮件中的文本处理作为 MIME 文本。因此，附件的文本显示在邮件的正文，并且出现乱给邮件收件人。出现此现象是因为邮件通过组合中 uuencode 邮件的 MIME 版本 1.0 头结合两种不同的 Internet 正文格式。</p>
+</blockquote>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><blockquote>
+<p>配置 Exchange SMTP 服务器，则将邮件发送到 Exchange Server，以便非 Exchange 服务器不向 uuencode 消息添加 MIME 版本标头。</p>
+</blockquote>
+<h3 id="mailx"><a href="#mailx" class="headerlink" title="mailx"></a>mailx</h3><p> 发现 <code>mailx -a</code> 可以发送附件，测试，成功。</p>
+<h3 id="crontab"><a href="#crontab" class="headerlink" title="crontab"></a>crontab</h3><p> 写 crontab 定时发送，Done.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag">#MySQL</a>
+          
+            <a href="/tags/mail/" rel="tag">#mail</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/30/Spring-定时任务总结/" rel="next" title="Spring 定时任务总结">
+                <i class="fa fa-chevron-left"></i> Spring 定时任务总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/01/服务器系统时间不一致/" rel="prev" title="服务器系统时间不一致">
+                服务器系统时间不一致 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/01/MySQL数据通过-mailx-定时发送的任务/"
+           data-title="MySQL数据通过 mailx 定时发送的任务" data-url="http://blog.tesop.cn/2016/08/01/MySQL数据通过-mailx-定时发送的任务/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#任务描述"><span class="nav-number">1.</span> <span class="nav-text">任务描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本思路"><span class="nav-number">2.</span> <span class="nav-text">基本思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到问题"><span class="nav-number">3.</span> <span class="nav-text">遇到问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql"><span class="nav-number">3.1.</span> <span class="nav-text">Mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列数据转为行数据"><span class="nav-number">3.1.1.</span> <span class="nav-text">列数据转为行数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保存为-csv-文件"><span class="nav-number">3.1.2.</span> <span class="nav-text">保存为 csv 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包含列名"><span class="nav-number">3.1.3.</span> <span class="nav-text">包含列名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完整语句如下"><span class="nav-number">3.1.4.</span> <span class="nav-text">完整语句如下</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发邮件"><span class="nav-number">4.</span> <span class="nav-text">发邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#uuencode"><span class="nav-number">4.1.</span> <span class="nav-text">uuencode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#乱码详细原因"><span class="nav-number">4.1.1.</span> <span class="nav-text">乱码详细原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案"><span class="nav-number">4.1.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mailx"><span class="nav-number">4.2.</span> <span class="nav-text">mailx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crontab"><span class="nav-number">4.3.</span> <span class="nav-text">crontab</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

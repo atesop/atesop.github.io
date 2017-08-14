@@ -1,0 +1,734 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="awk," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="自从被安利了 AWK 后，对基本的统计，计算逻辑不是特别复杂的任务，首先想到的是用 AWK 来处理，跟其它的语言比，它开发速度快，使用灵活。本文不会对 AWK 做系统的介绍，主要是记录自己在日常工作中常用的一些方法，假定读者已经了解 AWK 的基本语法。详细介绍见 GAWK 手册 或者 man awk。">
+<meta name="keywords" content="awk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWK 实用方法">
+<meta property="og:url" content="http://blog.tesop.cn/2016/08/28/AWK-实用方法/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="自从被安利了 AWK 后，对基本的统计，计算逻辑不是特别复杂的任务，首先想到的是用 AWK 来处理，跟其它的语言比，它开发速度快，使用灵活。本文不会对 AWK 做系统的介绍，主要是记录自己在日常工作中常用的一些方法，假定读者已经了解 AWK 的基本语法。详细介绍见 GAWK 手册 或者 man awk。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWK 实用方法">
+<meta name="twitter:description" content="自从被安利了 AWK 后，对基本的统计，计算逻辑不是特别复杂的任务，首先想到的是用 AWK 来处理，跟其它的语言比，它开发速度快，使用灵活。本文不会对 AWK 做系统的介绍，主要是记录自己在日常工作中常用的一些方法，假定读者已经了解 AWK 的基本语法。详细介绍见 GAWK 手册 或者 man awk。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2016/08/28/AWK-实用方法/"/>
+
+  <title> AWK 实用方法 | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                AWK 实用方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-08-28T10:40:17+08:00" content="2016-08-28">
+              2016-08-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/28/AWK-实用方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/28/AWK-实用方法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自从被安利了 AWK 后，对基本的统计，计算逻辑不是特别复杂的任务，首先想到的是用 AWK 来处理，跟其它的语言比，它开发速度快，使用灵活。本文不会对 AWK 做系统的介绍，主要是记录自己在日常工作中常用的一些方法，假定读者已经了解 AWK 的基本语法。详细介绍见 <a href="http://www.gnu.org/software/gawk/manual/gawk.html" target="_blank" rel="external">GAWK 手册</a> 或者 <code>man awk</code>。</p>
+<a id="more"></a>
+<h2 id="简单命令"><a href="#简单命令" class="headerlink" title="简单命令"></a>简单命令</h2><ul>
+<li>查看 awk 版本： <code>awk -W version</code> </li>
+<li>时间格式化： <code>strftime(&quot;%Y-%m-%d&quot;,$4)</code></li>
+<li>读取压缩文件： awk ‘{}’ &lt;(zcat file1.gz) &lt;(gzip -cd file2.gz)</li>
+<li>随机数生成: <ul>
+<li>srand( ) : 以当前的系统时间作为随机数的种子。</li>
+<li>rand( ) : 返回介于 0与1之间的(近似)随机数值。</li>
+<li>例 0-9 随机数：<code>awk &#39;BEGIN{srand();print int(rand()*10);}&#39;</code></li>
+</ul>
+</li>
+<li>删除 Array: <code>delete</code>, <code>delete array[1]</code></li>
+</ul>
+<h2 id="awk-文件格式"><a href="#awk-文件格式" class="headerlink" title=".awk 文件格式"></a>.awk 文件格式</h2><p>对于处理逻辑比较复杂的语句，建议写到文件中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ cat test.awk</div><div class="line"></div><div class="line"><span class="comment">#!/bin/awk awk -f</span></div><div class="line">BEGIN&#123;&#125;</div><div class="line">&#123;</div><div class="line">     <span class="comment">#todo</span></div><div class="line">&#125;</div><div class="line">END&#123;&#125;</div></pre></td></tr></table></figure>
+<p><em>注</em>：END 后面必须在同行内跟一个 <code>{</code>,<br>否则报错，<code>awk: cmd. line:4: END blocks must have an action part</code>.</p>
+<h2 id="多文件读入"><a href="#多文件读入" class="headerlink" title="多文件读入"></a>多文件读入</h2><p>通常的使用场景是，多个文件进行字段匹配，进行过滤或统计。例如，需要判断 file2 中的行出现在 file1 中，如果出现则打印。</p>
+<ul>
+<li><p>文本文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ cat file1</div><div class="line">1</div><div class="line">2</div><div class="line"></div><div class="line">$ cat file2</div><div class="line">1 2</div><div class="line">1 3</div><div class="line">2 5</div><div class="line">3 7</div></pre></td></tr></table></figure>
+</li>
+<li><p>ARGIND 读取参数下标， 针对 awk 4.0 以上版本。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'ARGIND==1&#123;map[$1] = 0&#125;ARGIND&gt;1 &amp;&amp; $1 in map&#123;print $0&#125;'</span> file1 file2</div><div class="line">1 2</div><div class="line">1 3</div><div class="line">2 5</div></pre></td></tr></table></figure>
+</li>
+<li><p>针对 4.0 以下版本，<code>man awk</code> 发现没有 ARGIND，可以用 ARGC, ARGV, FILENAME 组合。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'ARGV[1]==FILENAME&#123;map[$1] = 0&#125;ARGV[2]==FILENAME&amp;&amp;($1 in map)&#123;print $0&#125;'</span> file1 file2</div></pre></td></tr></table></figure>
+</li>
+<li><p>比较 NR 与 FNR</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'NR==FNR&#123;map[$1] = 0&#125;NR&gt;FNR &amp;&amp; ($1 in map)&#123;print $0&#125;'</span> file1 file2</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="单引号，双引号使用"><a href="#单引号，双引号使用" class="headerlink" title="单引号，双引号使用"></a>单引号，双引号使用</h2><p>需要根据分别处理，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">test</span>=<span class="string">"abs"</span></div><div class="line">$ awk <span class="string">'BEGIN&#123;print '</span><span class="variable">$test</span><span class="string">'&#125;'</span>  <span class="comment"># 可以调用命令行变量 test</span></div><div class="line">$ awk <span class="string">'BEGIN&#123;print "$test"&#125;'</span> <span class="comment"># 用双引号会把 $test 变成字符输出</span></div><div class="line">$ awk <span class="string">'BEGIN&#123;if("'</span><span class="variable">$test</span><span class="string">'"=="abs")&#123;print "True"&#125;&#125;'</span> <span class="comment">#会把test的值得到后用字符比较</span></div><div class="line">$ awk <span class="string">'BEGIN&#123;print '</span><span class="string">"<span class="variable">$test</span>"</span><span class="string">'&#125;'</span> <span class="comment">#可以按照test的实际值比较</span></div><div class="line">$ awk <span class="string">'BEGIN&#123;print '</span><span class="string">''</span><span class="variable">$test</span><span class="string">''</span><span class="string">'&#125;'</span> <span class="comment">#与第一种是实际效果</span></div></pre></td></tr></table></figure></p>
+<h2 id="awk-内排序"><a href="#awk-内排序" class="headerlink" title="awk 内排序"></a>awk 内排序</h2><ul>
+<li><p>通过内置函数（asort,asorti使用) awk 3.1以上版本才支持</p>
+<ul>
+<li><p>asort    srcarrlen=asort(srcarr,dscarr):</p>
+<p>  默认返回值是：原数组长度，传入参数dscarr则将排序后数组赋值给dscarr. 注：asort只对值进行了排序，因此丢掉原先键值</p>
+</li>
+<li><p>asorti slen=asorti(a,tA):</p>
+<p>  asorti对键值进行排序（字符串类型），将生成新的数组放入：tA中</p>
+</li>
+</ul>
+</li>
+<li><p>管道发送到sort排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">' &#123;&#125;END&#123;for(i in a)&#123;print i,a[i] | "sort -r -n -k1";&#125;&#125;'</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>自定义函数， 适用于复杂的排序规则。</p>
+</li>
+</ul>
+<p><em>注</em>： sort 有时候排序结果跟预期有出入， 需要设置 LC_ALL=C awk 语句。</p>
+<h2 id="使用外部变量"><a href="#使用外部变量" class="headerlink" title="使用外部变量"></a>使用外部变量</h2><ul>
+<li><code>awk &#39;{print a, b}&#39; a=111 b=222 yourfile</code><br>  <em>注</em>: 变量位置要在 file 名之前, 否则就不能调用。<br>  <em>注</em>：BEGIN{}中是不能调用这些的variable，要用之后所讲的第二种方法才可解决。</li>
+<li><code>awk –v a=111 –v b=222 &#39;{print a,b}&#39; yourfile</code><br>  <em>注</em>: 对每一个变量加一个 –v 作传递.</li>
+<li><code>awk &#39;{print &quot;&#39;&quot;$LOGNAME&quot;&#39;&quot;}&#39; yourfile</code></li>
+<li><code>awk &#39;{print \&quot;$LOGNAME\&quot;}&#39; yourfile</code></li>
+</ul>
+<h2 id="使用外部函数"><a href="#使用外部函数" class="headerlink" title="使用外部函数"></a>使用外部函数</h2><ol>
+<li><p>定义函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">a</span></span>() &#123;</div><div class="line"><span class="built_in">echo</span> <span class="variable">$1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>export</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> -f a</div></pre></td></tr></table></figure>
+</li>
+<li><p>system 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'BEGIN&#123;</span></div><div class="line"><span class="string">str="a"</span></div><div class="line"><span class="string">system("a "str);</span></div><div class="line"><span class="string">&#125;'</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><em>注</em>： awk 原始版本不支持，gawk 支持。<br><code>system(&quot;a &quot;str);</code> 命令用引号包含，否则会当做常量传递到子进程。<br><code>system(&quot;a &quot;str);</code> 可以使用 print “a”, str |”/bin/bash” 替换。</p>
+<p>如果 <code>system()</code>括号里面的参数没有加上双引号的话，awk认为它是一个变量，它会从awk的变量里面把它们先置换为常量，然后再回传给shell。</p>
+<p>如果<code>system()</code>括号里面的参数有加上双引号的话，那么awk就直接把引号里面的内容回传给shell，作为shell的“命令行”。</p>
+<p>awk无法直接将执行中的部分数据输出给Shell 命令. 且 Shell 命令执行的结果也无法直接输入到awk中。</p>
+<h2 id="处理-CSV-文件"><a href="#处理-CSV-文件" class="headerlink" title="处理 CSV 文件"></a>处理 CSV 文件</h2><ul>
+<li>awk 版本 &gt;= 4.0<br>  使用 FPAT = “([^,]+)|(\”[^\”]+\”)” 或 FPAT=’([^,]+)|(“[^”]+”)’</li>
+<li>awk 3.0 +<br>  FS=”^\”|\”,\”|\”$”, 更多匹配说明，参考<a href="http://web.archive.org/web/20120531065332/http://backreference.org/2010/04/17/csv-parsing-with-awk/" target="_blank" rel="external">1</a></li>
+</ul>
+<p><em>注</em>：如果 csv 字段中包含换行符号，上述两种方法则无法处理。因为 CSV 文件列数为固定值(比如 10)， 则可以做预处理：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk FPAT = <span class="string">"([^,]+)|(\"[^\"]+\")"</span> -v fields=10 <span class="string">'&#123;f+=NF; str=(str?str OFS:"") $0&#125; f&gt;=fields&#123;print str; str=""; f=0&#125;'</span> file</div></pre></td></tr></table></figure></p>
+<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p><code>and(v1, v2)</code> Return the bitwise AND of the values provided by v1 and v2.</p>
+<p><code>compl(val)</code> Return the bitwise complement of val.</p>
+<p><code>lshift(val, count)</code> Return the value of val, shifted left by count bits.</p>
+<p><code>or(v1, v2)</code> Return the bitwise OR of the values provided by v1 and v2.</p>
+<p><code>rshift(val, count)</code> Return the value of val, shifted right by count bits.</p>
+<p><code>xor(v1, v2)</code> Return the bitwise XOR of the values provided by v1 and v2.</p>
+<h2 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h2><ul>
+<li><p><code>awk &#39;$2~/888/{print &quot;ok&quot;}&#39; data_pvuv</code></p>
+</li>
+<li><p><code>match</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ awk &apos;BEGIN&#123;start=match(&quot;this is a test&quot;,/[a-z]+$/); print start&#125;&apos;</div><div class="line">11</div><div class="line">$ awk &apos;BEGIN&#123;start=match(&quot;this is a test&quot;,/[a-z]+$/); print start, RSTART, RLENGTH &#125;&apos;</div><div class="line">11 11 4</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>第一个例子，打印以连续小写字符结尾的开始位置，这里是11。</p>
+<p>第二个例子，打印RSTART和RLENGTH变量，这里是11(start)，11(RSTART)，4(RLENGTH)。</p>
+<p><em>注</em>：LC_ALL=C 使用与否，可能会导致[a-z] 的 match 结果不一致， 参见 <a href="http://www.gnu.org/software/gawk/manual/html_node/Ranges-and-Locales.html#Ranges-and-Locales" target="_blank" rel="external">awk 文档</a>。</p>
+<h2 id="使用管道-‘-’"><a href="#使用管道-‘-’" class="headerlink" title="使用管道 ‘|’"></a>使用管道 ‘|’</h2><ul>
+<li>awk output 指令 | “Shell 接受的命令”，<ul>
+<li>例 : <code>print $1,$2 | &quot;sort -k 1&quot;</code></li>
+</ul>
+</li>
+<li>“Shell 接受的命令” | awk input 指令，<ul>
+<li>例 : <code>&quot;ls &quot; | getline</code></li>
+</ul>
+</li>
+</ul>
+<p><em>注</em>: awk input 指令只有 getline 一个，awk output 指令有 print, printf() 二个。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/awk/" rel="tag">#awk</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/06/数据平台安装配置-HBase/" rel="next" title="数据平台安装配置-HBase">
+                <i class="fa fa-chevron-left"></i> 数据平台安装配置-HBase
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/28/Linux-Bash-实用方法/" rel="prev" title="Linux Bash 实用方法">
+                Linux Bash 实用方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/28/AWK-实用方法/"
+           data-title="AWK 实用方法" data-url="http://blog.tesop.cn/2016/08/28/AWK-实用方法/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单命令"><span class="nav-number">1.</span> <span class="nav-text">简单命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-文件格式"><span class="nav-number">2.</span> <span class="nav-text">.awk 文件格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多文件读入"><span class="nav-number">3.</span> <span class="nav-text">多文件读入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单引号，双引号使用"><span class="nav-number">4.</span> <span class="nav-text">单引号，双引号使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-内排序"><span class="nav-number">5.</span> <span class="nav-text">awk 内排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用外部变量"><span class="nav-number">6.</span> <span class="nav-text">使用外部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用外部函数"><span class="nav-number">7.</span> <span class="nav-text">使用外部函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理-CSV-文件"><span class="nav-number">8.</span> <span class="nav-text">处理 CSV 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位操作"><span class="nav-number">9.</span> <span class="nav-text">位操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串匹配"><span class="nav-number">10.</span> <span class="nav-text">字符串匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用管道-‘-’"><span class="nav-number">11.</span> <span class="nav-text">使用管道 ‘|’</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL,主从," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="MySQL Replication 可以用于数据备份，负载平衡，高可用，容错等。基本方式是，将 master 的数据(包括 SQL等)同步复制到 slave(s), 并重新执行。master 会将所有的改变以 binlog 文件保存，并异步传输到 slave 端。这样做的好处包括：  扩展解决方案：在多个 slave 负载分布，提高性能。 数据安全： 我们可以在不打断master上的数据请求的情况">
+<meta name="keywords" content="MySQL,主从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 主从一致介绍">
+<meta property="og:url" content="http://blog.tesop.cn/2016/09/03/MySQL-主从一致介绍/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="MySQL Replication 可以用于数据备份，负载平衡，高可用，容错等。基本方式是，将 master 的数据(包括 SQL等)同步复制到 slave(s), 并重新执行。master 会将所有的改变以 binlog 文件保存，并异步传输到 slave 端。这样做的好处包括：  扩展解决方案：在多个 slave 负载分布，提高性能。 数据安全： 我们可以在不打断master上的数据请求的情况">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://blog.tesop.cn/images/submaster-performance.png">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 主从一致介绍">
+<meta name="twitter:description" content="MySQL Replication 可以用于数据备份，负载平衡，高可用，容错等。基本方式是，将 master 的数据(包括 SQL等)同步复制到 slave(s), 并重新执行。master 会将所有的改变以 binlog 文件保存，并异步传输到 slave 端。这样做的好处包括：  扩展解决方案：在多个 slave 负载分布，提高性能。 数据安全： 我们可以在不打断master上的数据请求的情况">
+<meta name="twitter:image" content="http://blog.tesop.cn/images/submaster-performance.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2016/09/03/MySQL-主从一致介绍/"/>
+
+  <title> MySQL 主从一致介绍 | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MySQL 主从一致介绍
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-03T21:27:20+08:00" content="2016-09-03">
+              2016-09-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/03/MySQL-主从一致介绍/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/MySQL-主从一致介绍/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MySQL Replication 可以用于数据备份，负载平衡，高可用，容错等。基本方式是，将 master 的数据(包括 SQL等)同步复制到 slave(s), 并重新执行。master 会将所有的改变以 binlog 文件保存，并异步传输到 slave 端。这样做的好处包括：</p>
+<ul>
+<li>扩展解决方案：在多个 slave 负载分布，提高性能。</li>
+<li>数据安全： 我们可以在不打断master上的数据请求的情况下，在 slave 可以暂停 replication 进程，从而完成数据的备份。</li>
+<li>分析：数据在master上创建，一些数据分析的工作在slave上进行，这不影响master的性能。</li>
+<li>远距离的数据分布： 就近使用 slave 数据，而不是每次请求远端 master。</li>
+</ul>
+<a id="more"></a>
+<h2 id="Replication-Models"><a href="#Replication-Models" class="headerlink" title="Replication Models"></a>Replication Models</h2><p>传统的复制基于复制 master 上的 binary log中的事件，这需要记录日志文件及它们的位置。新的复制是基于全局事务ID(GTIDs)，它能保证所有在 master 上提交的事务都可以在 slave 上执行一遍，从而完成复制。<br>复制模式包括 asynchronous（异步), semisynchronous（半同步)。有些场景我们需要同步复制，可以使用 <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-cluster.html" target="_blank" rel="external">MySQL 集群</a>。</p>
+<h3 id="Asynchronous"><a href="#Asynchronous" class="headerlink" title="Asynchronous"></a>Asynchronous</h3><p>Asynchronous 为默认模式，在 master 上提交的updates执行成功并写入 binlog 之后，master 会继续处理其他的write请求。 之后任何时刻，slave 都可能与 master 建立链接，复制新增的变更日志，然后在本地执行，这必然导致在同一时间点备库上的数据可能与主库的不一致，并且无法保证主备之间的延迟。</p>
+<h3 id="Semisynchronous"><a href="#Semisynchronous" class="headerlink" title="Semisynchronous"></a>Semisynchronous</h3><p>Semisynchronous 需要在 master和slaves上安装插件来实现复制，且通过配置文件开启“半同步”，否则采用 asynchronous 复制。</p>
+<ol>
+<li>当slave与master建立连接时会表明其是否开启了“半同步”特性，</li>
+<li>需要master和至少一个slaves同时开启，否则仍将采用“异步”复制，master 执行事务提交的线程，在事务提交后堵塞，直到至少一个“半同步”的slave返回确认消息（ACK）或者所有的半同步slave都等待超时。</li>
+<li>slave 将接收到事务的信息写入到本地的 relay log文件且 flush 到磁盘后，才会向master返回确认消息。</li>
+<li>当所有的半同步slaves均在指定的时间内没有返回确认消息（即timeout），那么此后master将转换成异步复制模式，直到至少一个半同步slave完全跟进才会转换为半同步模式。</li>
+</ol>
+<p>如第4条描述，如果出现 timeout,比如网络问题，就会导致复制类型从 Semisynchronous 变为 Asynchronous。同时，采用半同步复制，会导致 master上的 tps 性能下降非常严重。选型时候，需要留意。</p>
+<p>详细配置信息参见<a href="http://dev.mysql.com/doc/refman/5.7/en/replication-semisync.html" target="_blank" rel="external">官方文档</a>。</p>
+<h2 id="Replication-Format"><a href="#Replication-Format" class="headerlink" title="Replication Format"></a>Replication Format</h2><p>Replication 之所以能够工作，归功于 binary log 的读写。不同的事件类型，决定了有不同的 binary log。主要的格式包括:</p>
+<ol>
+<li><p><strong>statement-based repication(SBR)</strong>: master将SQL statements语句写入binlog，slave 将 statements 复制到本地执行。</p>
+<ul>
+<li>优点:  binlog 写入更少数据。备份，恢复效率更好。包含所有产生变更的操作，便于审查数据库。</li>
+<li><p>缺点：部分变更操作不安全。当使用SBR时，一些非确定性的操作很难复制。例如以下修改数据的 DML 操作：</p>
+<ol>
+<li>statement中使用了UDF，而结果可能依赖于SQL执行的时机和系统变量。</li>
+<li>DELETE，UPDATE statements 使用 LIMIT 语句但没用 ORDER BY。</li>
+<li><p>statement 中使用下面函数的： LOAD_FILE()，UUID(), UUID_SHORT()，USER()，FOUND_ROWS()，SYSDATE() (除非 master 和 slave 启动时增加了 –sysdate-is-now 选项)，GET_LOCK()，IS_FREE_LOCK()，IS_USED_LOCK()，MASTER_POS_WAIT()，RAND()，RELEASE_LOCK()，SLEEP()，VERSION()。</p>
+</li>
+<li><p>INSERT … SELECT 使用更多的 row-level locks。 扫描表的UPDATE statements 需要锁更多行。</p>
+</li>
+<li>对InnoDB: 使用 AUTO_INCREMENT 的 INSERT statement 会阻塞其它非冲突的 INSERT statements。</li>
+<li>对于复杂的SQL语句，在slaves上仍然需要评估（解析）然后才能执行，而对于RBR，SQL语句只需要直接更新相应的行数据即可。</li>
+<li>在slave上评估、执行SQL时可能会发生错误，这种错误会随着时间的推移而不断累积，数据一致性的问题或许会不断增加。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>row-based replication(RBR)</strong>: master 将每行数据的变更信息写入 binlog，每条binlog信息表示一行(row)数据的变更内容，slaves 会复制binlog信息，以单条或批量执行变更操作。<ul>
+<li>优点：<ol>
+<li>所有的变更操作，都可以被正确的replication。</li>
+<li>对于 INSERT … SELECT，包含 AUTO_INCREMENT 的inserts，没有使用索引的UPDATE/DELETE，相对于SBR将需要更少的行锁。</li>
+</ol>
+</li>
+<li>缺点：<ol>
+<li>记录更多日志。 复制 DML statement, RBR 会把每条变更的行写到 binary log，对于回滚，同样产生日志。 此外，为了写数据，可能会长时间锁定 binary log，可能会产生一致性问题。使用 <code>binlog_row_image=minimal</code> 来减小问题发生的可能性。</li>
+<li>产生 BLOB 类型的 UDF 需要长时间复制。</li>
+<li>在 slave 上不能看到 master上哪些 statement 被接受和执行。 (可以使用 mysqlbinlog  –base64-output=DECODE-ROWS –verbose 查看变更的数据，或使用 binlog_rows_query_log_events。)</li>
+<li>不支持  MyISAM 表的 insert 一致性，因为 slave在更新非事务性表时，server被关闭，将会导致数据不一致性问题。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>mix-format replication: master 将根据存储引擎、变更操作类型等，从SBR、RBR中来选择更合适的日志格式，默认为SBR。</li>
+</ol>
+<p>ps:  在 MySQL 5.7.7 之前 SBR 为默认类型，MySQL 5.7.7 及之后， RBR 为默认。</p>
+<h2 id="Replication-Implementation"><a href="#Replication-Implementation" class="headerlink" title="Replication Implementation"></a>Replication Implementation</h2><p>Replication 功能通过三个线程实现，一个在master上，另外2个在slave上。</p>
+<ol>
+<li><p><strong>Binlog dump 线程</strong>： 当slave 连接时，master 创建线程，向 slave 发送 binary log。 可以在 master 上通过 <code>SHOW PROCESSLIST</code> 查看到 <code>Binlog Dump</code> 线程。<br>dump 线程会对 binlog 文件获取一个读锁，并读取内容发送给slave，一个变更操作读取完毕后，锁即释放，即使内容还没有发送给slave。</p>
+</li>
+<li><p><strong>Slave I/O 线程</strong>:  当在slave上执行 <code>START SLAVE</code> 后，将会创建一个I/O线程，它负责与master建立连接，请求需要的binlog，并将它们保存在本地的relay log中。在slave上通过<code>SHOW SLAVE STATUS</code>可以查看 <code>Slave_IO_running</code> 的状态。</p>
+</li>
+<li><p><strong>Slave SQL 线程</strong>：  slave 创建 SQL 线程来读取 由slave I/O  线程写的 relay log 并执行它们。</p>
+</li>
+</ol>
+<p>像上面的描述，每个  master/slave 将建立 3个线程。 master为每个slave建立一个单独的Binlog dump线程，slave使用2个单独的线程来完成replication，以便Slave I/O 线程，与 Slave SQL 线程互不影响。</p>
+<h2 id="Improving-Replication-Performance"><a href="#Improving-Replication-Performance" class="headerlink" title="Improving Replication Performance"></a>Improving Replication Performance</h2><p>随着 slave 的增加，即使 minimal 配置，负载也会增加，因为每个 slave 都需要客户端连接到 master。同时，每个 slave 都会全量复制 master 的 binary log，master 的网络负载也会增加，甚至成为瓶颈。</p>
+<p>官方文档提供了一种提升 replication 进程性能的方案，即创建一个深层次的 replication 结构—-即，master 只 replicate 到一个 slave，剩下的 slave 连接到它上：</p>
+<p><img src="/images/submaster-performance.png" alt="submaster-performance"></p>
+<p>为了保证能够运行，需要如下配置 MySQL 实例：</p>
+<ul>
+<li><p>Master 1 为主 master，所有的变更操作都写到此数据库，保证 binlog 可用。</p>
+</li>
+<li><p>Master 2 为 Master 1 的slave， 作用是其他 slave 提供 replication。 只有 Master 2 被允许连接到 Master 1，并且其 binlog 也可用。 设置 <code>--log-slave-updates</code>，使得 Master 1 的 replication 指令也可以写到 Master 2 的 binlog 中，从而使它们能被复制到实际的 slave 上。</p>
+</li>
+<li><p>Slave 1, Slave 2, Slave 3 作为 Master 2 的 slave, 能够复制 Master 2 的信息–确切的说，是  Master 1 上的变更操作。</p>
+</li>
+</ul>
+<h2 id="Replication-Issue"><a href="#Replication-Issue" class="headerlink" title="Replication Issue"></a>Replication Issue</h2><h3 id="一致性保证"><a href="#一致性保证" class="headerlink" title="一致性保证"></a>一致性保证</h3><p>在MySQL中，一次事务提交后，需要写undo，写redo，写 binlog，写数据文件等步骤。在这个过程中，如果在某个步骤发生crash，就有可能导致主从数据的不一致。为了避免这种情况，可以通过调整 master，slave 的my.cnf 中相关选项配置，确保即便发生crash了，也不会发生主从复制的数据丢失。</p>
+<ol>
+<li><p>master </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ vim my.cnf</div><div class="line">innodb_flush_log_at_trx_commit = 1</div><div class="line">sync_binlog = 1 <span class="comment"># 保证每次事务提交后，都能实时刷新到磁盘中，尤其是确保每次事务对应的binlog都能及时刷新到磁盘中</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>slave </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ vim my.cnf</div><div class="line">master_info_repository = <span class="string">"TABLE"</span></div><div class="line">relay_log_info_repository = <span class="string">"TABLE"</span> <span class="comment"># 确保在slave上和复制相关的元数据表也采用InnoDB引擎，受到InnoDB事务安全的保护</span></div><div class="line">relay_log_recovery = 1 <span class="comment"># 开启relay log自动修复机制</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>ps</strong>: 此方法不能绝对保证一致性，因为某些SQL 本身存在不确定因素，或者人为在slave上修改数据，最终导致主从数据不一致。</p>
+<h3 id="核对及修复"><a href="#核对及修复" class="headerlink" title="核对及修复"></a>核对及修复</h3><p>使用 MySQL Replication 过程中，很可能会因为网络问题，参数配置不当，statement 操作不当等，出现 master 与 slave 出现不一致的情况。可以通过  <a href="https://www.percona.com/doc/percona-toolkit/2.2/pt-table-checksum.html" target="_blank" rel="external"><code>pt-table-checksum</code></a>, <a href="https://www.percona.com/doc/percona-toolkit/2.2/pt-table-sync.html" target="_blank" rel="external"><code>pt-table-sync</code></a> 两个工具来校验并修复数据。 因为此部分还没有实践过，而且网上可以找到大量相关资料，暂略。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="http://shift-alt-ctrl.iteye.com/blog/2266908" target="_blank" rel="external">Mysql Replication基本原理（一）</a></li>
+<li><a href="http://dev.mysql.com/doc/refman/5.7/en/replication-sbr-rbr.html" target="_blank" rel="external">sbr, rbr 优缺点</a></li>
+<li><a href="http://dev.mysql.com/doc/refman/5.7/en/replication-implementation-details.html" target="_blank" rel="external">replication 实现细节</a></li>
+<li><a href="http://imysql.com/2015/11/20/mysql-faq-how-make-sure-replicate-data-consistant.shtml" target="_blank" rel="external">如何保证主从复制数据一致性</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag">#MySQL</a>
+          
+            <a href="/tags/主从/" rel="tag">#主从</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/28/Linux-Bash-实用方法/" rel="next" title="Linux Bash 实用方法">
+                <i class="fa fa-chevron-left"></i> Linux Bash 实用方法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/19/MySQL-排序编号问题/" rel="prev" title="MySQL 编号及排序问题">
+                MySQL 编号及排序问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/03/MySQL-主从一致介绍/"
+           data-title="MySQL 主从一致介绍" data-url="http://blog.tesop.cn/2016/09/03/MySQL-主从一致介绍/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Replication-Models"><span class="nav-number">1.</span> <span class="nav-text">Replication Models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Asynchronous"><span class="nav-number">1.1.</span> <span class="nav-text">Asynchronous</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Semisynchronous"><span class="nav-number">1.2.</span> <span class="nav-text">Semisynchronous</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replication-Format"><span class="nav-number">2.</span> <span class="nav-text">Replication Format</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replication-Implementation"><span class="nav-number">3.</span> <span class="nav-text">Replication Implementation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Improving-Replication-Performance"><span class="nav-number">4.</span> <span class="nav-text">Improving Replication Performance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replication-Issue"><span class="nav-number">5.</span> <span class="nav-text">Replication Issue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性保证"><span class="nav-number">5.1.</span> <span class="nav-text">一致性保证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核对及修复"><span class="nav-number">5.2.</span> <span class="nav-text">核对及修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>

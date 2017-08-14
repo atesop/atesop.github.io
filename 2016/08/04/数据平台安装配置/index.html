@@ -1,0 +1,763 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="7S29BfFuIh41huUSJ6lE7063KLmZceQZxZtDXRoe8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hadoop,HBase,大数据,Storm,安装,Spark,Zookeeper,Kafka,Hive," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本系列总结主流的大数据平台工具安装配置步骤及遇到的问题, 包括                                                                                        Hadoop">
+<meta name="keywords" content="Hadoop,HBase,大数据,Storm,安装,Spark,Zookeeper,Kafka,Hive">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据平台安装配置">
+<meta property="og:url" content="http://blog.tesop.cn/2016/08/04/数据平台安装配置/index.html">
+<meta property="og:site_name" content="Tesop">
+<meta property="og:description" content="本系列总结主流的大数据平台工具安装配置步骤及遇到的问题, 包括                                                                                        Hadoop">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-10T03:18:34.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据平台安装配置">
+<meta name="twitter:description" content="本系列总结主流的大数据平台工具安装配置步骤及遇到的问题, 包括                                                                                        Hadoop">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.tesop.cn/2016/08/04/数据平台安装配置/"/>
+
+  <title> 数据平台安装配置 | Tesop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Tesop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数据平台安装配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-08-04T10:09:59+08:00" content="2016-08-04">
+              2016-08-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据平台安装配置/" itemprop="url" rel="index">
+                    <span itemprop="name">数据平台安装配置</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/04/数据平台安装配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/04/数据平台安装配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本系列总结主流的大数据平台工具安装配置步骤及遇到的问题, 包括                                                                                      </p>
+<ul>
+<li>Hadoop                                                                                                                              </li>
+<li>Spark                                                                                                                               </li>
+<li>Zookeeper                                                                                                                           </li>
+<li>Kafka                                                                                                                               </li>
+<li>Storm                                                                                                                               </li>
+<li>Hive                                                                                                                                </li>
+<li>SparkSQL                                                                                                                            </li>
+<li>HBase</li>
+</ul>
+<p>本文主要是进行安装前的准备工作，包括修改服务器配置，SSH 免密码登录。<br><a id="more"></a></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="服务器配置"><a href="#服务器配置" class="headerlink" title="服务器配置"></a>服务器配置</h3><hr>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">IP</th>
+<th style="text-align:right">hostname</th>
+<th style="text-align:right">memory</th>
+<th style="text-align:right">role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">192.168.1.136</td>
+<td style="text-align:right">h16</td>
+<td style="text-align:right">64G</td>
+<td style="text-align:right">master,slave</td>
+</tr>
+<tr>
+<td style="text-align:left">192.168.1.137</td>
+<td style="text-align:right">h17</td>
+<td style="text-align:right">16G</td>
+<td style="text-align:right">slave</td>
+</tr>
+<tr>
+<td style="text-align:left">192.168.1.138</td>
+<td style="text-align:right">h18</td>
+<td style="text-align:right">16G</td>
+<td style="text-align:right">slave</td>
+</tr>
+</tbody>
+</table>
+<h3 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h3><hr>
+<ul>
+<li>系统版本: Linux version 2.6.32-358.el6.x86_64</li>
+<li>Java 版本: <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">JDK1.7.0_75</a></li>
+<li>Scala 版本: <a href="http://www.scala-lang.org/download/" target="_blank" rel="external">scala-2.11.7</a></li>
+<li>Hadoop 版本: <a href="http://hadoop.apache.org/releases.html#Download" target="_blank" rel="external">hadoop-2.7.1</a></li>
+<li>Spark 版本: <a href="http://spark.apache.org/downloads.html" target="_blank" rel="external">spark-1.5.1</a></li>
+<li>ZooKeeper 版本: <a href="http://zookeeper.apache.org/releases.html" target="_blank" rel="external">zookeeper-3.4.6</a></li>
+<li>Kafka 版本: <a href="http://kafka.apache.org/downloads.html" target="_blank" rel="external">kafka_2.11-0.8.2.2</a></li>
+<li>Storm 版本: <a href="http://storm.apache.org/downloads.html" target="_blank" rel="external">storm-0.9.5</a></li>
+<li>Hive 版本: <a href="http://hive.apache.org/downloads.html" target="_blank" rel="external">hive-1.2.1</a></li>
+<li>Hbase 版本: <a href="http://hive.apache.org/downloads.html" target="_blank" rel="external">hbase-1.0.1</a></li>
+</ul>
+<h2 id="SSH-Without-password"><a href="#SSH-Without-password" class="headerlink" title="SSH Without password"></a>SSH Without password</h2><p>所有服务器相同的操作步骤</p>
+<h3 id="修改-Hostname"><a href="#修改-Hostname" class="headerlink" title="修改 Hostname"></a>修改 Hostname</h3><hr>
+<p>查看 Hostname:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hostname</div></pre></td></tr></table></figure></p>
+<p>修改 Hostname:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim /etc/sysconfig/network</div></pre></td></tr></table></figure></p>
+<h3 id="增加新用户"><a href="#增加新用户" class="headerlink" title="增加新用户"></a>增加新用户</h3><hr>
+<p>在每台服务器上创建新用户:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ useradd hadoop</div></pre></td></tr></table></figure></p>
+<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$useradd -d /home/hadoop hadoop</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>问题:</strong> 配置完成后, 出现 <code>ssh hostname</code>, <code>ssh localhost</code> 不成功. </p>
+<p><strong>原因:</strong> 创建用户时, 没有注意当前 Home 目录是否存在, 导致出现问题. </p>
+<p><strong>解决:</strong> <em>root</em> 权限下, 删除用户,及相应的文件,重新创建创建. </p>
+</blockquote>
+<pre><code>`ssh -vvv localhost` 查看 log; 
+`useradd user` 与 `useradd user -d home -m user` 的区别: 需要注意参数含义; 
+`userdel -r user`: 删除用户及对应的 Home 目录, 如果当前用户处于登陆状态, 则删除失败. 
+`userdel -f user`: 强制删除用户及对应 Home 目录, 即使当前用户处于登陆状态. 
+</code></pre><h3 id="配置-hosts-文件"><a href="#配置-hosts-文件" class="headerlink" title="配置 hosts 文件"></a>配置 hosts 文件</h3><hr>
+<p> <code>/etc/hosts</code> 是用来配置主机将用的DNS服务器信息，是记载LAN内接续的各主机的对应 HostName 和 IP 用的。<br> 增加 ip 与 host 的对应: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ vim /etc/hosts</div><div class="line"></div><div class="line">   192.168.1.136 h16</div><div class="line">   192.168.1.137 h17</div><div class="line">   192.168.1.138 h18</div></pre></td></tr></table></figure>
+<p>保证服务器可以相互 ping 通:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ping h16</div></pre></td></tr></table></figure>
+<h3 id="SSH-无密码登陆"><a href="#SSH-无密码登陆" class="headerlink" title="SSH 无密码登陆"></a>SSH 无密码登陆</h3><hr>
+<p>保证已安装 <em>ssh</em> 和 <em>rsync</em>.</p>
+<ol>
+<li><p>Home 目录下 创建 <em>.ssh</em> 文件夹, 并保证 hadoop 用户的完全控制权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir .ssh</div><div class="line">chmod 700 .ssh</div></pre></td></tr></table></figure>
+</li>
+<li><p><em>.ssh</em> 路径下生成公钥和私钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+</li>
+<li><p>将公钥添加到 authorized_keys 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cat id_rsa.pub &gt;&gt; authorized_keys</div><div class="line"></div><div class="line">chmod 644 authorized_keys</div></pre></td></tr></table></figure>
+</li>
+<li><p>root 用户修改 <em>ssh</em> 配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ vim /etc/ssh/sshd_config</div><div class="line"></div><div class="line">RSAAuthentication yes # 启用 RSA 认证</div><div class="line"></div><div class="line">PubkeyAuthentication yes # 启用公钥私钥配对认证方式</div><div class="line"></div><div class="line">AuthorizedKeysFile .ssh/authorized_keys # 公钥文件路径（和上面生成的文件同）</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看 <em>ssh</em> 的 状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh localhost</div></pre></td></tr></table></figure>
+</li>
+<li><p>将 id_rsa.pub 中 添加到 其他服务器的 authorized_keys 中</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag">#Hadoop</a>
+          
+            <a href="/tags/HBase/" rel="tag">#HBase</a>
+          
+            <a href="/tags/大数据/" rel="tag">#大数据</a>
+          
+            <a href="/tags/Storm/" rel="tag">#Storm</a>
+          
+            <a href="/tags/安装/" rel="tag">#安装</a>
+          
+            <a href="/tags/Spark/" rel="tag">#Spark</a>
+          
+            <a href="/tags/Zookeeper/" rel="tag">#Zookeeper</a>
+          
+            <a href="/tags/Kafka/" rel="tag">#Kafka</a>
+          
+            <a href="/tags/Hive/" rel="tag">#Hive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/01/服务器系统时间不一致/" rel="next" title="服务器系统时间不一致">
+                <i class="fa fa-chevron-left"></i> 服务器系统时间不一致
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/04/数据平台安装配置-Hadoop-on-Yarn/" rel="prev" title="数据平台安装配置-Hadoop on Yarn">
+                数据平台安装配置-Hadoop on Yarn <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/04/数据平台安装配置/"
+           data-title="数据平台安装配置" data-url="http://blog.tesop.cn/2016/08/04/数据平台安装配置/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Tesop" />
+          <p class="site-author-name" itemprop="name">Tesop</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器配置"><span class="nav-number">1.1.</span> <span class="nav-text">服务器配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件版本"><span class="nav-number">1.2.</span> <span class="nav-text">软件版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH-Without-password"><span class="nav-number">2.</span> <span class="nav-text">SSH Without password</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-Hostname"><span class="nav-number">2.1.</span> <span class="nav-text">修改 Hostname</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加新用户"><span class="nav-number">2.2.</span> <span class="nav-text">增加新用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-hosts-文件"><span class="nav-number">2.3.</span> <span class="nav-text">配置 hosts 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH-无密码登陆"><span class="nav-number">2.4.</span> <span class="nav-text">SSH 无密码登陆</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tesop</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tesop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
