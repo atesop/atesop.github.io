@@ -12,3 +12,4 @@ Disallow: /vendors/
 Disallow: /fancybox/
 
 Sitemap: http://blog.tesop.cn/sitemap.xml
+Sitemap: http://blog.tesop.cn/baidusitemap.xml
